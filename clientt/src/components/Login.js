@@ -5,6 +5,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import Axios from "axios";
 import '../App.css';
 
+import lg from './login.jpg';
+
 function Login() {
 
     // Variables
@@ -60,6 +62,9 @@ function Login() {
     return (
 
         <div className="login">
+
+            <img src={lg} />
+
             <h1>Login</h1>
             <input
                 type="text"
@@ -68,6 +73,7 @@ function Login() {
                     setUsername(e.target.value);
                 }}
             />
+            <br></br>
             <input
                 type="password"
                 placeholder="Password..."
@@ -75,9 +81,10 @@ function Login() {
                     setPassword(e.target.value);
                 }}
             />
-            <button onClick={login}> Login </button>
-
             <br></br>
+            <button onClick={login}> Login </button>
+            <br></br>
+
 
             <p>
                 Need an Account?<br />
