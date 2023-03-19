@@ -1,6 +1,4 @@
-// Issues: -
-// 1. Login checks only first occurance of username. Eg: two records - abc:123, abc:abc
-//    If entered abc, it'll check first abc.
+// css
 
 const express = require("express");
 const mysql = require("mysql");
