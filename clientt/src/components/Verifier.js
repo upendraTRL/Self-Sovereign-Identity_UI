@@ -10,7 +10,7 @@ function Verifier() {
 
                 <Container>
 
-                    <Navbar className='navBar'>
+                    <Navbar className='navBarV'>
                         <Container>
                             <Navbar.Toggle aria-controls="basic-navbar-nav" />
                             <Navbar.Collapse id="basic-navbar-nav">

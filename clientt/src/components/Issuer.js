@@ -10,7 +10,7 @@ function Issuer() {
 
                 <Container>
 
-                    <Navbar className='navBar'>
+                    <Navbar className='navBarI'>
                         <Container>
                             <Navbar.Toggle aria-controls="basic-navbar-nav" />
                             <Navbar.Collapse id="basic-navbar-nav">
@@ -92,7 +92,7 @@ function Issuer() {
                             {/* Row1 */}
                             <Row className='mailtitle'>
                                 <Col>
-                                    <h2>Verifications</h2>
+                                    <h2>Credentials</h2>
                                 </Col>
 
                             </Row>

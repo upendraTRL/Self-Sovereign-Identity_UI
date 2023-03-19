@@ -1,4 +1,3 @@
-
 .colLeft {
     /* background-color: grey; */
     /* padding-top: 10rem; */
@@ -59,11 +58,11 @@
     border-radius: 30px;
 }
 
-.navBar {
-    background-color: blueviolet;
+.navBarH {
+    background-color: darkblue;
     margin-bottom: 1rem;
 }
 
-.navBar .navText {
+.navBarH .navText {
     color: white
 }

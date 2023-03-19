@@ -12,7 +12,7 @@ function Holder() {
 
                 <Container>
 
-                    <Navbar className='navBar'>
+                    <Navbar className='navBarH'>
                         <Container>
                             <Navbar.Toggle aria-controls="basic-navbar-nav" />
                             <Navbar.Collapse id="basic-navbar-nav">

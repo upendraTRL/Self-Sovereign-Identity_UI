@@ -78,11 +78,11 @@
     border-radius: 30px;
 }
 
-.navBar {
+.navBarI {
     background-color: #2596be;
     margin-bottom: 1rem;
 }
 
-.navBar .navText {
+.navBarI .navText {
     color: white
 }
