@@ -1,0 +1,88 @@
+.colLeft {
+    /* background-color: grey; */
+    /* padding-top: 10rem; */
+    border-radius: 30px;
+    margin: 5rem;
+    padding: 1rem;
+    margin-right: 10rem;
+}
+
+.textColor {
+    color: black;
+}
+
+.rightCol {
+    background-color: lightgray;
+    border-radius: 30px;
+    /* padding: 5rem; */
+}
+
+.mailtitle {
+    padding-bottom: 1rem;
+    padding-top: 1rem;
+}
+
+.rightCol .rightBlock1 {
+    /* border: 2px solid yellow; */
+    /* margin: 2rem; */
+    /* margin-top: 2rem; */
+    /* padding: 1rem; */
+
+    margin-left: 0rem;
+
+    border-radius: 30px;
+    /* background-color: white; */
+}
+
+.rightCol .rightBlock1 .sendCred {
+    /* border: 2px solid yellow; */
+    margin: 2rem;
+    /* margin-top: 2rem; */
+    /* padding: 1rem; */
+
+    /* margin-left: 0rem;
+
+    border-radius: 30px; */
+    /* background-color: white; */
+}
+
+
+
+.rightCol .rightBlock2 {
+    /* border: 2px solid yellow; */
+    /* margin: 2rem; */
+    margin-top: 2rem;
+    margin-left: 0rem;
+
+    border-radius: 30px;
+    /* background-color: white; */
+}
+
+
+.colLeft .leftRow1 {
+    background-color: lightgray;
+    border-radius: 30px;
+    margin-bottom: 2rem;
+}
+
+.colLeft .leftRow1 .inviBtn {
+    padding-top: 1.4rem;
+    /* padding: 1rem; */
+    margin-left: 5rem;
+}
+
+
+
+.colLeft .leftRow2 {
+    background-color: lightgray;
+    border-radius: 30px;
+}
+
+.navBar {
+    background-color: #2596be;
+    margin-bottom: 1rem;
+}
+
+.navBar .navText {
+    color: white
+}
