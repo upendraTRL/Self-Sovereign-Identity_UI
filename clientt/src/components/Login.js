@@ -1,7 +1,7 @@
 // Use section instead div.
 
 import React, { useEffect, useState } from "react";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Axios from "axios";
 import '../App.css';
 
@@ -15,15 +15,34 @@ function Login() {
 
     Axios.defaults.withCredentials = true;
 
+    const navigate = useNavigate();
+
     // Login function defination
     const login = () => {
         Axios.post("http://localhost:3001/login", {
             username: username,
             password: password,
         }).then((response) => {
+            console.log(response);
             if (response.data.message) {
                 setLoginStatus(response.data.message);
             } else {
+                // <Navigate to="/registration" replace={true} />
+
+                if (response.data[0].usertype == "holder") {
+                    // console.log("HOLDERRRRRRR");
+                    navigate("/holder");
+                } else if (response.data[0].usertype == "verifier") {
+                    // console.log("verifier");
+                    navigate("/verifier");
+                } else if (response.data[0].usertype == "issuer") {
+                    // console.log("issuer");
+                    navigate("/issuer");
+                } else {
+                    console.log("Not Authorized");
+                }
+
+                console.log("REACTTTTTTTT");
                 setLoginStatus(response.data[0].username);
             }
         });
