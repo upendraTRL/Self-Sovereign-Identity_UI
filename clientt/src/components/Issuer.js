@@ -2,6 +2,21 @@ import { Button, Container, Row, Col, Form, Nav, Navbar, NavDropdown } from 'rea
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './issuer.css';
 
+const sizeF = {
+    fontSize: '24px'
+};
+
+function HolderButton({ value }) {
+    const buttonStyle = {
+        backgroundColor: '#087494',
+        border: 'none',
+        color: '#FFFFFF',
+    };
+    return (
+        <Button style={buttonStyle}>{value}</Button>
+    )
+}
+
 function Issuer() {
     return (
 
@@ -15,8 +30,10 @@ function Issuer() {
                             <Navbar.Toggle aria-controls="basic-navbar-nav" />
                             <Navbar.Collapse id="basic-navbar-nav">
                                 <Nav className="me-auto">
-                                    <Nav.Link href="#home" className='navText'>Aadhar Issuing Authority</Nav.Link>
-                                    <Nav.Link href="#link" className='navText'>Issuer</Nav.Link>
+                                    <Nav.Link href="#home" className='navText' style={sizeF} >Aadhar Issuing Authority</Nav.Link>
+                                </Nav>
+                                <Nav className="ml-auto">
+                                    <Nav.Link href="#home" className='navText' style={sizeF} >Issuer</Nav.Link>
                                 </Nav>
                             </Navbar.Collapse>
                         </Container>
@@ -43,7 +60,7 @@ function Issuer() {
 
                                 <Row>
                                     <Col className='inviBtn'>
-                                        <Button>Create Invitation</Button>
+                                        <HolderButton value="Create Invitation" />
                                     </Col>
 
                                     <Col>
@@ -102,7 +119,7 @@ function Issuer() {
                                 <Row className='rightBlock1'>
 
                                     <Col>
-                                        <Button className='sendCred'>Send Credential</Button>
+                                        <HolderButton value="Send Credentials" />
                                     </Col>
                                     <Col>
                                         <Form.Group className="mb-3" controlId="formBasicEmail">

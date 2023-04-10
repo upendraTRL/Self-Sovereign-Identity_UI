@@ -2,6 +2,21 @@ import { Button, Container, Row, Col, Form, Nav, Navbar, NavDropdown } from 'rea
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './verifier.css';
 
+const sizeF = {
+    fontSize: '24px'
+};
+
+function HolderButton({ value }) {
+    const buttonStyle = {
+        backgroundColor: 'purple',
+        border: 'none',
+        color: '#FFFFFF',
+    };
+    return (
+        <Button style={buttonStyle}>{value}</Button>
+    )
+}
+
 function Verifier() {
     return (
 
@@ -15,8 +30,10 @@ function Verifier() {
                             <Navbar.Toggle aria-controls="basic-navbar-nav" />
                             <Navbar.Collapse id="basic-navbar-nav">
                                 <Nav className="me-auto">
-                                    <Nav.Link href="#home" className='navText'>ACME</Nav.Link>
-                                    <Nav.Link href="#link" className='navText'>Verifier</Nav.Link>
+                                    <Nav.Link href="#home" className='navText' style={sizeF} >ACME</Nav.Link>
+                                </Nav>
+                                <Nav className="ml-auto">
+                                    <Nav.Link href="#home" className='navText' style={sizeF} >Verifier</Nav.Link>
                                 </Nav>
                             </Navbar.Collapse>
                         </Container>
@@ -43,7 +60,7 @@ function Verifier() {
 
                                 <Row>
                                     <Col className='inviBtn'>
-                                        <Button>Create Invitation</Button>
+                                        <HolderButton value="Create Invitation" />
                                     </Col>
 
                                     <Col>
@@ -95,7 +112,7 @@ function Verifier() {
                                     <h2>Verifications</h2>
                                 </Col>
                                 <Col>
-                                    <Button>Refresh</Button>
+                                    <HolderButton value="Refresh" />
                                 </Col>
                             </Row>
 

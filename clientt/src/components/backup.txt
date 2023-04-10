@@ -1,10 +1,10 @@
 
-import { Button, Container, Row, Col, Form, Nav, Navbar, NavDropdown } from 'react-bootstrap';
+
+import { Button, Container, Row, Col, Form, Nav, Navbar, NavDropdown, InputGroup, FormControl } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './holder.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCopy } from '@fortawesome/free-solid-svg-icons';
-
 
 //Copy to clipboard
 function CopyToClipboardButton({ text }) {
@@ -12,21 +12,35 @@ function CopyToClipboardButton({ text }) {
         navigator.clipboard.writeText(text);
     };
     return (
-        <button><FontAwesomeIcon icon={faCopy} onClick={handleCopyClick} /></button>
+        <InputGroup>
+            <InputGroup.Prepend>
+                <InputGroup.Text>
+                    <FontAwesomeIcon icon={faCopy} onClick={handleCopyClick} />
+                </InputGroup.Text>
+            </InputGroup.Prepend>
+            <FormControl placeholder={text} />
+        </InputGroup>
     );
 }
+
+//Logo text field
+// function LogoTextField() {
+//     return (
+//         <InputGroup>
+//             <InputGroup.Prepend>
+//                 <InputGroup.Text>
+//                     <FontAwesomeIcon icon={faCopy} />
+//                 </InputGroup.Text>
+//             </InputGroup.Prepend>
+//             <FormControl placeholder='Email' />
+//         </InputGroup>
+//     );
+// }
 
 //Font Size
 const sizeF = {
     fontSize: '24px'
 };
-
-//Name
-function UserName({ name }) {
-    return (
-        <Nav.Link href="#home" className='navText' style={sizeF} >{name}</Nav.Link>
-    )
-}
 
 //Button CSS
 function HolderButton({ value }) {
@@ -44,30 +58,25 @@ function Holder() {
     return (
 
         <div className="Holderr">
-
-            {/* Nav Section */}
             <header className="Holderr-header">
-
-                <Navbar className='navBarH'>
-                    <Container>
-                        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-                        <Navbar.Collapse id="basic-navbar-nav">
-                            <Nav className="me-auto">
-                                <UserName name="Alice" />
-                            </Nav>
-                            <Nav className="ml-auto">
-                                <Nav.Link href="#home" className='navText' style={sizeF} >Holder</Nav.Link>
-                            </Nav>
-                        </Navbar.Collapse>
-                    </Container>
-                </Navbar>
-
-            </header >
-
-            {/* Body section */}
-            <div className='holderBody'>
                 <Container>
+                    <Navbar className='navBarH'>
+                        <Container>
+                            <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                            <Navbar.Collapse id="basic-navbar-nav">
+                                <Nav className="me-auto">
+                                    <Nav.Link href="#home" className='navText' style={sizeF} >Alice</Nav.Link>
+                                </Nav>
+                                <Nav className="ml-auto">
+                                    <Nav.Link href="#home" className='navText' style={sizeF} >Holder</Nav.Link>
+                                </Nav>
+                            </Navbar.Collapse>
+                        </Container>
+                    </Navbar>
+
+
                     <Row>
+
                         {/* Col Left */}
                         <Col className='colLeft'>
 
@@ -88,12 +97,9 @@ function Holder() {
 
                                         <Form>
                                             <Form.Group className="mb-3" controlId="formBasicEmail">
-                                                <Form.Label className='textColor' >Invitation message: </Form.Label>
-                                                <div className='copy-text'>
-                                                    <input type="text" class="text" value="Msg!" disabled />
-                                                    <CopyToClipboardButton text="Hello" />
-                                                </div>
-                                                {/* <Form.Control className='' type="text" value="Value" disabled /> */}
+                                                {/* <Form.Label className='textColor' >Invitation message: </Form.Label>
+                                                <Form.Control type="text" value="Value" disabled /> */}
+                                                <CopyToClipboardButton  />
                                             </Form.Group>
                                         </Form>
 
@@ -177,6 +183,7 @@ function Holder() {
 
 
                         </Col>
+
 
                         {/* Column Right */}
                         <Col className='rightCol'>
@@ -267,8 +274,7 @@ function Holder() {
 
                     </Row>
                 </Container>
-            </div>
-
+            </header >
         </div >
 
 
