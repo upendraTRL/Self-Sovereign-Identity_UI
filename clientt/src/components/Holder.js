@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import './holder.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCopy } from '@fortawesome/free-solid-svg-icons';
+import { useState, useEffect } from 'react';
 
 
 //Copy to clipboard
@@ -40,7 +41,43 @@ function HolderButton({ value }) {
     )
 }
 
+//Collapse
+// function PanelC({ title, children }) {
+//     const [isActive, setIsActive] = useState(false);
+//     return (
+//         <div className='collapsePanel'>
+//             <h3>{title}</h3>
+//             {isActive ? (
+//                 <p>{children}</p>
+//             ) : (
+//                 <button onClick={() => setIsActive(true)}>Show</button>
+//             )}
+//         </div>
+//     )
+// }
+
 function Holder() {
+    //Aadhar array
+    const arrayTest = [
+        { id: 0, name: 'User1', age: 20 },
+        { id: 1, name: 'User2', age: 21 },
+        { id: 2, name: 'User3', age: 35 }
+    ]
+
+    const [listOfUsers, setListOfUsers] = useState(arrayTest);
+
+
+    //Collapse 2
+    const [selected, setSelected] = useState(null);
+
+    const toggle = (i) => {
+        if (selected === i) {
+            return setSelected(null);
+        }
+        setSelected(i);
+    }
+
+    //Main
     return (
 
         <div className="Holderr">
@@ -196,7 +233,19 @@ function Holder() {
                                 <Row className='rightBlock1'>
                                     <Row className='title1'><h4>Aadhar</h4></Row>
                                     <Col>
-                                        <Form>
+
+                                        <div className='usersDisplay'>
+                                            {listOfUsers.map((user) => {
+                                                return (
+                                                    <div>
+                                                        <h4>Name: {user.name}</h4>
+                                                        <h4>Age: {user.age}</h4>
+                                                    </div>
+                                                );
+                                            })}
+                                        </div>
+
+                                        {/* <Form>
                                             <Form.Group className="mb-3" controlId="formBasicEmail">
                                                 <Form.Label className='textColor'>Name: </Form.Label>
                                                 <Form.Control type="text" placeholder="Enter name" />
@@ -206,12 +255,33 @@ function Holder() {
                                                 <Form.Label className='textColor'>Age: </Form.Label>
                                                 <Form.Control type="number" placeholder="Enter age" />
                                             </Form.Group>
-                                        </Form>
+                                        </Form> */}
                                     </Col>
 
 
                                     <Col>
-                                        <Form>
+
+                                        <div className='collapseFeature'>
+                                            <h4>Aadhar List</h4>
+                                            <div className={selected === true ? "content show" : "content"}>Description</div>
+
+                                            <div className="titleC" onClick={() => toggle(true)}>
+                                                <span>{selected === true ? '-' : '+'}</span>
+                                            </div>
+                                        </div>
+
+                                        {/* <div className='collapseFeature'>
+                                            <h2>Collapse</h2>
+                                            <PanelC title="About">
+                                                Hello about!
+                                            </PanelC>
+                                            <PanelC title="Etymology">
+                                                Description!
+                                            </PanelC>
+
+                                        </div> */}
+
+                                        {/* <Form>
                                             <Form.Group className="mb-3" controlId="formBasicEmail">
                                                 <Form.Label className='textColor'>Gender: </Form.Label>
                                                 <Form.Control type="text" placeholder="Enter gender" />
@@ -221,7 +291,7 @@ function Holder() {
                                                 <Form.Label className='textColor'>Address: </Form.Label>
                                                 <Form.Control type="text" placeholder="Enter Address" />
                                             </Form.Group>
-                                        </Form>
+                                        </Form> */}
                                     </Col>
 
                                 </Row>
