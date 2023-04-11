@@ -58,10 +58,14 @@ function HolderButton({ value }) {
 
 function Holder() {
     //Aadhar array
+    const firstUser = {
+        id: 0, name: 'Ram', age: 20
+    }
+
     const arrayTest = [
-        { id: 0, name: 'User1', age: 20 },
-        { id: 1, name: 'User2', age: 21 },
-        { id: 2, name: 'User3', age: 35 }
+        { id: 0, name: 'Krishna', age: 24 },
+        { id: 1, name: 'Messi', age: 25 },
+        { id: 2, name: 'Steve', age: 42 }
     ]
 
     const [listOfUsers, setListOfUsers] = useState(arrayTest);
@@ -231,68 +235,100 @@ function Holder() {
                             {/* Row2 */}
                             <Row>
                                 <Row className='rightBlock1'>
-                                    <Row className='title1'><h4>Aadhar</h4></Row>
-                                    <Col>
 
+                                    <Row className='title1'><h4>Aadhar</h4></Row>
+
+                                    {/* 0th Index User */}
+                                    <Row>
+                                        {/* Name & Age */}
+                                        <Col>
+                                            <Form>
+                                                <Form.Group className="mb-3" controlId="formBasicEmail">
+                                                    <Form.Label className='textColor'>Name: </Form.Label>
+                                                    <Form.Control type="text" value={firstUser.name} disabled />
+                                                </Form.Group>
+
+                                                <Form.Group className="mb-3" controlId="formBasicEmail">
+                                                    <Form.Label className='textColor'>Age: </Form.Label>
+                                                    <Form.Control type="number" value={firstUser.age} disabled />
+                                                </Form.Group>
+                                            </Form>
+                                        </Col>
+
+                                        {/* Gender & address */}
+                                        <Col>
+                                            {/* //Collapse use1 */}
+
+                                            <Form>
+                                                <Form.Group className="mb-3" controlId="formBasicEmail">
+                                                    <Form.Label className='textColor'>Gender: </Form.Label>
+                                                    <Form.Control type="text" value="Male" disabled />
+                                                </Form.Group>
+
+                                                <Form.Group className="mb-3" controlId="formBasicEmail">
+                                                    <Form.Label className='textColor'>Address: </Form.Label>
+                                                    <Form.Control type="text" value="Pune" disabled />
+                                                </Form.Group>
+                                            </Form>
+                                        </Col>
+                                        <hr style={{ background: "black", height: "3px" }} />
+                                    </Row>
+
+
+                                    {/* Clp star */}
+
+                                    <div className={selected === true ? "content show" : "content"}>
                                         <div className='usersDisplay'>
+
+
                                             {listOfUsers.map((user) => {
                                                 return (
-                                                    <div>
-                                                        <h4>Name: {user.name}</h4>
-                                                        <h4>Age: {user.age}</h4>
-                                                    </div>
+
+                                                    // User list
+                                                    <Row>
+                                                        {/*Name & Age */}
+                                                        <Col>
+                                                            <Form>
+                                                                <Form.Group className="mb-3" controlId="formBasicEmail">
+                                                                    <Form.Label className='textColor'>Name: </Form.Label>
+                                                                    <Form.Control type="text" value={user.name} disabled />
+                                                                </Form.Group>
+
+                                                                <Form.Group className="mb-3" controlId="formBasicEmail">
+                                                                    <Form.Label className='textColor'>Age: </Form.Label>
+                                                                    <Form.Control type="number" value={user.age} disabled />
+                                                                </Form.Group>
+                                                            </Form>
+                                                        </Col>
+
+                                                        {/* Gender & address */}
+                                                        <Col>
+                                                            {/* //Collapse use1 */}
+
+                                                            <Form>
+                                                                <Form.Group className="mb-3" controlId="formBasicEmail">
+                                                                    <Form.Label className='textColor'>Gender: </Form.Label>
+                                                                    <Form.Control type="text" value="Male" disabled />
+                                                                </Form.Group>
+
+                                                                <Form.Group className="mb-3" controlId="formBasicEmail">
+                                                                    <Form.Label className='textColor'>Address: </Form.Label>
+                                                                    <Form.Control type="text" value="Pune" disabled />
+                                                                </Form.Group>
+                                                            </Form>
+                                                        </Col>
+                                                        <hr style={{ background: "black", height: "3px" }} />
+                                                    </Row>
                                                 );
                                             })}
                                         </div>
+                                    </div>
 
-                                        {/* <Form>
-                                            <Form.Group className="mb-3" controlId="formBasicEmail">
-                                                <Form.Label className='textColor'>Name: </Form.Label>
-                                                <Form.Control type="text" placeholder="Enter name" />
-                                            </Form.Group>
+                                    <div className="titleC" onClick={() => toggle(true)}>
+                                        <span>{selected === true ? 'Show Less' : 'Show More'}</span>
+                                    </div>
 
-                                            <Form.Group className="mb-3" controlId="formBasicEmail">
-                                                <Form.Label className='textColor'>Age: </Form.Label>
-                                                <Form.Control type="number" placeholder="Enter age" />
-                                            </Form.Group>
-                                        </Form> */}
-                                    </Col>
-
-
-                                    <Col>
-
-                                        <div className='collapseFeature'>
-                                            <h4>Aadhar List</h4>
-                                            <div className={selected === true ? "content show" : "content"}>Description</div>
-
-                                            <div className="titleC" onClick={() => toggle(true)}>
-                                                <span>{selected === true ? '-' : '+'}</span>
-                                            </div>
-                                        </div>
-
-                                        {/* <div className='collapseFeature'>
-                                            <h2>Collapse</h2>
-                                            <PanelC title="About">
-                                                Hello about!
-                                            </PanelC>
-                                            <PanelC title="Etymology">
-                                                Description!
-                                            </PanelC>
-
-                                        </div> */}
-
-                                        {/* <Form>
-                                            <Form.Group className="mb-3" controlId="formBasicEmail">
-                                                <Form.Label className='textColor'>Gender: </Form.Label>
-                                                <Form.Control type="text" placeholder="Enter gender" />
-                                            </Form.Group>
-
-                                            <Form.Group className="mb-3" controlId="formBasicEmail">
-                                                <Form.Label className='textColor'>Address: </Form.Label>
-                                                <Form.Control type="text" placeholder="Enter Address" />
-                                            </Form.Group>
-                                        </Form> */}
-                                    </Col>
+                                    {/* Clp end */}
 
                                 </Row>
                             </Row>
@@ -347,3 +383,29 @@ function Holder() {
 }
 
 export default Holder
+
+
+
+
+
+
+
+// Collapse use1
+{/* <div className='collapseFeature'>
+    <h4>Aadhar List</h4>
+    <div className={selected === true ? "content show" : "content"}>Description</div>
+
+    <div className="titleC" onClick={() => toggle(true)}>
+    <span>{selected === true ? 'Show Less' : 'Show More'}</span>
+    </div>
+    </div> */}
+
+{/* <div className='collapseFeature'>
+<h2>Collapse</h2>
+<PanelC title="About">
+Hello about!
+</PanelC>
+<PanelC title="Etymology">
+Description!
+</PanelC>
+</div> */}
