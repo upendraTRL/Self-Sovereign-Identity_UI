@@ -48,7 +48,7 @@ function Issuer() {
 
                                     <Col>
                                         <Form.Group className="mb-3" controlId="formBasicEmail">
-                                            <Form.Label className='textColor'>Connection name: </Form.Label>
+                                            <Form.Label className='textColor'>Holder Name: </Form.Label>
                                             <Form.Control type="text" />
                                         </Form.Group>
 
@@ -61,7 +61,7 @@ function Issuer() {
 
                                         <Form>
                                             <Form.Group className="mb-3" controlId="formBasicEmail">
-                                                <Form.Label className='textColor'>Invitation message: </Form.Label>
+                                                <Form.Label className='textColor'>Invitation Link: </Form.Label>
                                                 <Form.Control type="text" />
                                             </Form.Group>
                                         </Form>
@@ -106,7 +106,7 @@ function Issuer() {
                                     </Col>
                                     <Col>
                                         <Form.Group className="mb-3" controlId="formBasicEmail">
-                                            <Form.Label className='textColor'>To: </Form.Label>
+                                            <Form.Label className='textColor'>To Holder: </Form.Label>
                                             <Form.Control type="text" />
                                         </Form.Group>
 

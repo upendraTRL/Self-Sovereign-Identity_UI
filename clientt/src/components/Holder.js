@@ -34,10 +34,7 @@ function Holder() {
                             <Row className='leftRow1'>
                                 <Row className='mailtitle'>
                                     <Col>
-                                        <h2>Invitation</h2>
-                                    </Col>
-                                    <Col>
-
+                                        <h2>Accept Invitation</h2>
                                     </Col>
                                 </Row>
 
@@ -58,7 +55,7 @@ function Holder() {
                                 <Row>
                                     <Col>
                                         <Form.Group className="mb-3" controlId="formBasicEmail">
-                                            <Form.Label className='textColor'>Holder/Issuer: </Form.Label>
+                                            <Form.Label className='textColor'>Verifier/Issuer: </Form.Label>
                                             <Form.Control type="text" />
                                         </Form.Group>
 
@@ -66,7 +63,7 @@ function Holder() {
 
                                     <Col>
                                         <Form.Group className="mb-3" controlId="formBasicEmail">
-                                            <Form.Label className='textColor'>Holder name: </Form.Label>
+                                            <Form.Label className='textColor'>Verifier name: </Form.Label>
                                             <Form.Control type="text" />
                                         </Form.Group>
 
@@ -79,7 +76,7 @@ function Holder() {
 
                                     </Col>
                                     <Col>
-                                        <Button>Refresh</Button>
+                                        <Button>Accept Invitation</Button>
                                     </Col>
                                 </Row>
 

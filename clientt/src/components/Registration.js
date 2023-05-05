@@ -30,9 +30,14 @@ const Registration = () => {
       password: passwordReg,
       usertype: usertypeReg,
     }).then((response) => {
-
+      if(response.status == 200){
+        if(window.confirm("Successfully registered, Please login!")) {
+          window.location.href = "http://localhost:3000/"
+        }
+      }
       console.log(response);
     });
+
   };
 
   return (
@@ -67,6 +72,7 @@ const Registration = () => {
       <br></br>
 
       <button onClick={register}> Register </button>
+      {/* <button onClick={console.log(register)}> Show register </button> */}
 
       <br></br>
 

@@ -48,7 +48,7 @@ function Verifier() {
 
                                     <Col>
                                         <Form.Group className="mb-3" controlId="formBasicEmail">
-                                            <Form.Label className='textColor'>Connection name: </Form.Label>
+                                            <Form.Label className='textColor'>Holder name: </Form.Label>
                                             <Form.Control type="text" />
                                         </Form.Group>
 
@@ -61,7 +61,7 @@ function Verifier() {
 
                                         <Form>
                                             <Form.Group className="mb-3" controlId="formBasicEmail">
-                                                <Form.Label className='textColor'>Invitation message: </Form.Label>
+                                                <Form.Label className='textColor'>Invitation Link: </Form.Label>
                                                 <Form.Control type="text" />
                                             </Form.Group>
                                         </Form>

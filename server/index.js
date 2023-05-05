@@ -1,7 +1,9 @@
 // css
 
 const express = require("express");
-const mysql = require("mysql");
+const mysql = require("mysql2"); //imp to use mysql2 instead of mysql1, to avoid following error.
+//Error: ER_NOT_SUPPORTED_AUTH_MODE: Client does not support authentication protocol requested by server; 
+//consider upgrading MySQL client
 const cors = require("cors");
 
 const bodyParser = require("body-parser");
@@ -39,7 +41,7 @@ app.use(
 const db = mysql.createConnection({
     user: 'root',
     host: 'localhost',
-    password: 'root',
+    password: 'Business123#',
     database: 'loginsystem'
 });
 
@@ -57,6 +59,11 @@ app.post("/register", (req, res) => {
             "INSERT INTO users (username, password, usertype) VALUES (?,?,?)",
             [username, hash, usertype],
             (err, result) => {
+                console.log(result);
+                if(typeof err === "object"){
+                    console.log('Successful registration!');
+                    res.status(200).send("Success");
+                }
                 console.log(err);
             }
         );
