@@ -49,6 +49,7 @@ app.post("/register", (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
     const usertype = req.body.usertype;
+    const displayname = req.body.displayname;
 
     bcrypt.hash(password, saltRounds, (err, hash) => {
         if (err) {
@@ -56,11 +57,11 @@ app.post("/register", (req, res) => {
         }
 
         db.query(
-            "INSERT INTO users (username, password, usertype) VALUES (?,?,?)",
-            [username, hash, usertype],
+            "INSERT INTO users (username, password, usertype, displayname) VALUES (?,?,?,?)",
+            [username, hash, usertype, displayname],
             (err, result) => {
                 console.log(result);
-                if(typeof err === "object"){
+                if (typeof err === "object") {
                     console.log('Successful registration!');
                     res.status(200).send("Success");
                 }

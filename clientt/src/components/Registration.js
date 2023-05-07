@@ -14,6 +14,7 @@ const Registration = () => {
   const [usernameReg, setUsernameReg] = useState("");
   const [passwordReg, setPasswordReg] = useState("");
   const [usertypeReg, setUsertypeReg] = useState("");
+  const [displaynameReg, setDisplaynameReg] = useState("");
 
   //Dropdown
   const options = [
@@ -29,9 +30,10 @@ const Registration = () => {
       username: usernameReg,
       password: passwordReg,
       usertype: usertypeReg,
+      displayname: displaynameReg,
     }).then((response) => {
-      if(response.status == 200){
-        if(window.confirm("Successfully registered, Please login!")) {
+      if (response.status == 200) {
+        if (window.confirm("Successfully registered, Please login!")) {
           window.location.href = "http://localhost:3000/"
         }
       }
@@ -49,6 +51,13 @@ const Registration = () => {
         type="text"
         onChange={(e) => {
           setUsernameReg(e.target.value);
+        }}
+      />
+      <label>Display Name</label>
+      <input
+        type="text"
+        onChange={(e) => {
+          setDisplaynameReg(e.target.value);
         }}
       />
       <label>Password</label>
