@@ -116,11 +116,9 @@ function Holder() {
                             <Row className='leftRow1'>
                                 <Row className='mailtitle'>
                                     <Col>
-                                        <h2>Invitation</h2>
+                                        <h2>Accept Invitation</h2>
                                     </Col>
-                                    <Col>
 
-                                    </Col>
                                 </Row>
 
                                 {/* Row2 */}
@@ -144,7 +142,7 @@ function Holder() {
                                 <Row>
                                     <Col>
                                         <Form.Group className="mb-3" controlId="formBasicEmail">
-                                            <Form.Label className='textColor'>Holder/Issuer: </Form.Label>
+                                            <Form.Label className='textColor'>Verifier/Issuer: </Form.Label>
                                             <Form.Control type="text" />
                                         </Form.Group>
 
@@ -152,7 +150,7 @@ function Holder() {
 
                                     <Col>
                                         <Form.Group className="mb-3" controlId="formBasicEmail">
-                                            <Form.Label className='textColor'>Holder name: </Form.Label>
+                                            <Form.Label className='textColor'>Verifier name: </Form.Label>
                                             <Form.Control type="text" />
                                         </Form.Group>
 
@@ -166,7 +164,7 @@ function Holder() {
                                     </Col>
                                     <Col>
                                         {/* <Button variant='info'>Refresh</Button> */}
-                                        <HolderButton value="Refresh" />
+                                        <HolderButton value="Accept Invitation" />
                                     </Col>
                                 </Row>
 
@@ -341,12 +339,12 @@ function Holder() {
                                         <Form>
                                             <Form.Group className="mb-3" controlId="formBasicEmail">
                                                 <Form.Label className='textColor'>Name: </Form.Label>
-                                                <Form.Control type="text" placeholder="Enter name" />
+                                                <Form.Control type="text" placeholder="Enter Name" />
                                             </Form.Group>
 
                                             <Form.Group className="mb-3" controlId="formBasicEmail">
                                                 <Form.Label className='textColor'>Age: </Form.Label>
-                                                <Form.Control type="number" placeholder="Enter age" />
+                                                <Form.Control type="number" placeholder="Enter Age" />
                                             </Form.Group>
                                         </Form>
                                     </Col>
@@ -356,7 +354,7 @@ function Holder() {
                                         <Form>
                                             <Form.Group className="mb-3" controlId="formBasicEmail">
                                                 <Form.Label className='textColor'>Gender: </Form.Label>
-                                                <Form.Control type="text" placeholder="Enter gender" />
+                                                <Form.Control type="text" placeholder="Enter Gender" />
                                             </Form.Group>
 
                                             <Form.Group className="mb-3" controlId="formBasicEmail">

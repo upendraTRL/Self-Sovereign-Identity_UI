@@ -65,7 +65,7 @@ function Issuer() {
 
                                     <Col>
                                         <Form.Group className="mb-3" controlId="formBasicEmail">
-                                            <Form.Label className='textColor'>Connection name: </Form.Label>
+                                            <Form.Label className='textColor'>Holder name: </Form.Label>
                                             <Form.Control type="text" />
                                         </Form.Group>
 
@@ -78,7 +78,7 @@ function Issuer() {
 
                                         <Form>
                                             <Form.Group className="mb-3" controlId="formBasicEmail">
-                                                <Form.Label className='textColor'>Invitation message: </Form.Label>
+                                                <Form.Label className='textColor'>Invitation Link: </Form.Label>
                                                 <Form.Control type="text" />
                                             </Form.Group>
                                         </Form>
@@ -123,7 +123,7 @@ function Issuer() {
                                     </Col>
                                     <Col>
                                         <Form.Group className="mb-3" controlId="formBasicEmail">
-                                            <Form.Label className='textColor'>To: </Form.Label>
+                                            <Form.Label className='textColor'>To Holder: </Form.Label>
                                             <Form.Control type="text" />
                                         </Form.Group>
 
@@ -140,12 +140,12 @@ function Issuer() {
                                         <Form>
                                             <Form.Group className="mb-3" controlId="formBasicEmail">
                                                 <Form.Label className='textColor'>Name: </Form.Label>
-                                                <Form.Control type="text" placeholder="Enter name" />
+                                                <Form.Control type="text" placeholder="Enter Name" />
                                             </Form.Group>
 
                                             <Form.Group className="mb-3" controlId="formBasicEmail">
                                                 <Form.Label className='textColor'>Age: </Form.Label>
-                                                <Form.Control type="number" placeholder="Enter age" />
+                                                <Form.Control type="number" placeholder="Enter Age" />
                                             </Form.Group>
                                         </Form>
                                     </Col>
@@ -155,7 +155,7 @@ function Issuer() {
                                         <Form>
                                             <Form.Group className="mb-3" controlId="formBasicEmail">
                                                 <Form.Label className='textColor'>Gender: </Form.Label>
-                                                <Form.Control type="text" placeholder="Enter gender" />
+                                                <Form.Control type="text" placeholder="Enter Gender" />
                                             </Form.Group>
 
                                             <Form.Group className="mb-3" controlId="formBasicEmail">
