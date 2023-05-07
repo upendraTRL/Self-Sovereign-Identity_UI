@@ -103,9 +103,9 @@
 .copy-text button {
     margin-left: 10rem;
     padding: 10px;
-    background: #5784f5;
-    color: #fff;
-    font-size: 18px;
+    background: #fff;
+    color: #000;
+    font-size: 20px;
     border: none;
     outline: none;
     border-radius: 10px;
