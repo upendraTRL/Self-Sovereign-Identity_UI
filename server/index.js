@@ -134,6 +134,7 @@ app.post("/connections/receive",(req,res)=>{
   axios.post(`http://${process.env.NEST_IP}:${process.env.NEST_PORT}/connections/receive-invitation`)
   .then(response => {
     console.log(response.data);
+    
   })
   .catch(error => {
     console.error(error);
@@ -153,6 +154,21 @@ app.post("/issue-credential/send",(req,res)=>{
     console.error(error);
   });
 })
+
+
+///// get credential by connection id
+app.get("/issue-credential/get-credentials",(req,res)=>{
+
+    console.log("Inside issue credential send")
+  axios.get(`http://${process.env.NEST_IP}:${process.env.NEST_PORT}/issue-credential/records`)
+  .then(response => {
+    console.log(response.data);
+  })
+  .catch(error => {
+    console.error(error);
+  });
+})
+
 
 
 
