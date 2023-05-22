@@ -9,6 +9,7 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
+const SequelizeStore = require('connect-session-sequelize')(session.Store);
 
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
@@ -26,17 +27,6 @@ app.use(
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use(
-    session({
-        key: "userId",
-        secret: "subscribe",
-        resave: false,
-        saveUninitialized: false,
-        cookie: {
-            expires: 60 * 60 * 24,
-        },
-    })
-);
 
 //Database connection
 const db = mysql.createConnection({
@@ -45,6 +35,20 @@ const db = mysql.createConnection({
     password: 'root',
     database: 'loginsystem'
 });
+
+// Configure session middleware
+app.use(
+    session({
+        secret: 'your-secret-key', // Replace with a secret key for session encryption
+        resave: false,
+        saveUninitialized: false,
+        cookie: {
+            maxAge: 30 * 24 * 60 * 60 * 1000, // Set the session cookie expiration time (30 days in this example)
+        },
+    })
+);
+
+
 
 app.post("/register", (req, res) => {
     const username = req.body.username;
@@ -122,11 +126,11 @@ app.post("/login", (req, res) => {
                 bcrypt.compare(password, result[0].password, (error, response) => {
                     console.log(password, result[0].password, response);
                     if (response) {
+                        console.log("Name = ", username);
 
-                        req.session.user = result;
+                        req.session.user = result; // Store user data in the session
                         console.log("Logged in - ", req.session.user);
                         res.send(result);
-                        // console.log("RESULT - " + result);
                     } else {
                         res.send({ message: "Wrong username/password combination!" });
                     }
@@ -140,14 +144,34 @@ app.post("/login", (req, res) => {
 
 //Send schema_id to Issuer, using API
 //Can send * from users in future
+// app.get("/users", (req, res) => {
+//     // const storedUsername = localStorage.getItem('username');
+//     const username = req.body.username;
+//     console.log("Name = ", username);
+
+//     // const query = `SELECT schema_id FROM users WHERE username = ${storedUsername}`;
+//     const query = `SELECT schema_id FROM users WHERE username = ?`;
+//     db.query(query, [username], (err, result) => {
+//         if (err) return res.json(err);
+//         return res.json(result);
+//     });
+// });
+
+
+//New try
 app.get("/users", (req, res) => {
-    const query = 'SELECT schema_id FROM users WHERE id = 1';
-    db.query(query, (err, result) => {
-        if (err) return res.json(err);
+    const username = req.query.username; // Get the id from the request query parameters
+    const query = `SELECT schema_id FROM users WHERE id = ?`;
+
+    console.log("Name = ", username);
+
+    db.query(query, [username], (err, result) => {
+        if (err) {
+            return res.json(err);
+        }
         return res.json(result);
     });
 });
-
 
 
 app.listen(3001, () => {

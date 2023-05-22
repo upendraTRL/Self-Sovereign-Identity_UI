@@ -20,7 +20,10 @@ function Login() {
     const navigate = useNavigate();
 
     // Login function defination
+    const [users, setUsers] = useState([]);
+
     const login = () => {
+
         Axios.post("http://localhost:3001/login", {
             username: username,
             password: password,
@@ -53,11 +56,25 @@ function Login() {
     };
 
     useEffect(() => {
+        const username = localStorage.getItem('username'); // Retrieve id from localStorage
+
+
         Axios.get("http://localhost:3001/login").then((response) => {
             if (response.data.loggedIn == true) {
                 setLoginStatus(response.data.user[0].username);
             }
         });
+
+        Axios.get(`/users?id=${username}`)
+            .then(response => {
+                setUsers(response.data);
+                console.log("New API");
+            })
+            .catch(error => {
+                console.error(error);
+            });
+
+
     }, []);
 
     //HTML 
