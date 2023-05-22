@@ -18,10 +18,12 @@ function App() {
     <Routes>
       <Route path="/" element={<Login />} />
       <Route path="/registration" element={<Registration />} />
+
+      {/* We want to protect these routes */}
       <Route path="/holder" element={<Holder />} />
-      {/* <Route path="/holder" element={<HolderElement><Holder /></HolderElement>} /> */}
       <Route path="/verifier" element={<Verifier />} />
       <Route path="/issuer" element={<Issuer />} />
+      {/* <Route path="/holder" element={<HolderElement><Holder /></HolderElement>} /> */}
     </Routes>
   );
 }

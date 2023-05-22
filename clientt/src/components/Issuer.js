@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { Button, Container, Row, Col, Form, Nav, Navbar, NavDropdown } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './issuer.css';
@@ -18,6 +19,22 @@ function HolderButton({ value }) {
 }
 
 function Issuer() {
+
+    //fetch schema_id from users table
+    const [connection, setConnection] = useState();
+
+    useEffect(() => {
+        fetch('http://localhost:3001/users')
+            .then(res => res.json())
+            .then(data => {
+                // console.log(data)
+                console.log("Issuer schema_id ", data[0].schema_id)
+            })
+            .catch(err => console.log(err));
+    }, []);
+
+    // var connection = "abc"
+
     return (
 
         <div className="Holderr">
@@ -98,6 +115,60 @@ function Issuer() {
                                 </Row>
 
                             </Row>
+
+                            {/* Row2 */}
+                            {connection && (<Row className='ncRow'>
+                                <Row className='mailtitle'>
+                                    <Col>
+                                        <h2>New Card</h2>
+                                    </Col>
+                                    <Col>
+
+                                    </Col>
+                                </Row>
+
+                                {/* Row2 */}
+
+                                <Row>
+                                    <Col className='inviBtn'>
+                                        <HolderButton value="Create Invitation" />
+                                    </Col>
+
+                                    <Col>
+                                        <Form.Group className="mb-3" controlId="formBasicEmail">
+                                            <Form.Label className='textColor'>Holder name: </Form.Label>
+                                            <Form.Control type="text" />
+                                        </Form.Group>
+
+                                    </Col>
+
+                                </Row>
+
+                                <Row>
+                                    <Row className='leftBlock1'>
+
+                                        <Form>
+                                            <Form.Group className="mb-3" controlId="formBasicEmail">
+                                                <Form.Label className='textColor'>Invitation Link: </Form.Label>
+                                                <Form.Control type="text" />
+                                            </Form.Group>
+                                        </Form>
+
+                                    </Row>
+                                </Row>
+
+
+
+                                <Row className='mailtitle'>
+                                    <Col>
+
+                                    </Col>
+                                    <Col>
+
+                                    </Col>
+                                </Row>
+
+                            </Row>)}
 
 
                         </Col>

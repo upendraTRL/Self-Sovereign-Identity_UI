@@ -38,6 +38,7 @@ app.use(
     })
 );
 
+//Database connection
 const db = mysql.createConnection({
     user: 'root',
     host: 'localhost',
@@ -97,7 +98,7 @@ app.post("/login", (req, res) => {
                     if (response) {
 
                         req.session.user = result;
-                        console.log(req.session.user);
+                        console.log("Logged in - ", req.session.user);
                         res.send(result);
                         // console.log("RESULT - " + result);
                     } else {
@@ -110,6 +111,17 @@ app.post("/login", (req, res) => {
         }
     );
 });
+
+//Send schema_id to Issuer, using API
+//Can send * from users in future
+app.get("/users", (req, res) => {
+    const query = 'SELECT schema_id FROM users WHERE id = 1';
+    db.query(query, (err, result) => {
+        if (err) return res.json(err);
+        return res.json(result);
+    });
+});
+
 
 app.listen(3001, () => {
     console.log("running server");
