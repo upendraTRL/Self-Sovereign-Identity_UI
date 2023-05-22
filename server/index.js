@@ -72,6 +72,32 @@ app.post("/register", (req, res) => {
     });
 });
 
+app.post("/newcardenter", (req, res) => {
+    const username = req.body.username;
+    const password = req.body.password;
+
+
+    bcrypt.hash(password, saltRounds, (err, hash) => {
+        if (err) {
+            console.log(err);
+        }
+
+        db.query(
+            "INSERT INTO users (username, password, usertype, displayname) VALUES (?,?,?,?)",
+            [username, hash, usertype, displayname],
+            (err, result) => {
+                console.log(result);
+                if (typeof err === "object") {
+                    console.log('Successful registration!');
+                    res.status(200).send("Success");
+                }
+                console.log(err);
+            }
+        );
+    });
+});
+
+
 app.get("/login", (req, res) => {
     if (req.session.user) {
         res.send({ loggedIn: true, user: req.session.user });
@@ -114,12 +140,24 @@ app.post("/login", (req, res) => {
 
 //Send schema_id to Issuer, using API
 //Can send * from users in future
-app.get("/users", (req, res) => {
-    const query = 'SELECT schema_id FROM users WHERE id = 1';
-    db.query(query, (err, result) => {
-        if (err) return res.json(err);
-        return res.json(result);
-    });
+app.post("/users:username", (req, res) => {
+    const username = req.body.username;
+
+    db.query(
+        "SELECT * FROM users WHERE username = ?",
+        username,
+        (err, result) => {
+            if (err) {
+                res.send({ error: err.message });
+            } else {
+                if (result.length > 0) {
+                    res.send(result[0]);
+                } else {
+                    res.send({ message: "User not found" });
+                }
+            }
+        }
+    );
 });
 
 

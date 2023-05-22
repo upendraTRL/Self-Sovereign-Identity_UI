@@ -2,38 +2,84 @@ import { useEffect, useState } from 'react';
 import { Button, Container, Row, Col, Form, Nav, Navbar, NavDropdown } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './issuer.css';
+import { faCopy } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
+//Copy to clipboard
+function CopyToClipboardButton({ text }) {
+    const handleCopyClick = () => {
+        navigator.clipboard.writeText(text);
+    };
+    return (
+        <button><FontAwesomeIcon icon={faCopy} onClick={handleCopyClick} /></button>
+    );
+}
 
 const sizeF = {
     fontSize: '24px'
 };
 
 function HolderButton({ value }) {
+
+    //New card data fill API call
+    // const enterNewCard = () => {
+    //     Axios.post("http://localhost:3001/newcardenter", {
+    //         cred: usernameReg,
+    //         password: passwordReg,
+    //         usertype: usertypeReg,
+    //         displayname: displaynameReg,
+    //     }).then((response) => {
+    //         if (response.status == 200) {
+    //             if (window.confirm("Saved!")) {
+    //                 // window.location.href = "http://localhost:3000/"
+    //             }
+    //         }
+    //         console.log(response);
+    //     });
+
+    // };
+
+
     const buttonStyle = {
         backgroundColor: '#087494',
         border: 'none',
         color: '#FFFFFF',
     };
     return (
-        <Button style={buttonStyle}>{value}</Button>
+        <Button
+            // onClick={enterNewCard}
+            style={buttonStyle}>{value}
+        </Button>
     )
 }
 
 function Issuer() {
 
-    //fetch schema_id from users table
-    const [connection, setConnection] = useState();
+    //enter new card
+    const [credDef, setCredDef] = useState("");
+    const [schemaID, setSchemaID] = useState("");
+
+
+    //fetch id,username,schema_id from users table
+    // const [connection, setConnection] = useState();
+    const [displayID, setDisplayID] = useState();
+    const [displayName, setDisplayName] = useState();
 
     useEffect(() => {
         fetch('http://localhost:3001/users')
             .then(res => res.json())
             .then(data => {
                 // console.log(data)
-                console.log("Issuer schema_id ", data[0].schema_id)
+                setDisplayID(data[0].id)
+                setDisplayName(data[0].username)
+                console.log("Issuer schema_id ", data[0].id, ", ", data[0].username, ", ", data[0].schema_id)
             })
             .catch(err => console.log(err));
     }, []);
 
-    // var connection = "abc"
+    var schemaCheck = "abc"
+
+
 
     return (
 
@@ -47,10 +93,10 @@ function Issuer() {
                             <Navbar.Toggle aria-controls="basic-navbar-nav" />
                             <Navbar.Collapse id="basic-navbar-nav">
                                 <Nav className="me-auto">
-                                    <Nav.Link href="#home" className='navText' style={sizeF} >Aadhar Issuing Authority</Nav.Link>
+                                    <Nav.Link href="#home" className='navText' style={sizeF} >{displayID}</Nav.Link>
                                 </Nav>
                                 <Nav className="ml-auto">
-                                    <Nav.Link href="#home" className='navText' style={sizeF} >Issuer</Nav.Link>
+                                    <Nav.Link href="#home" className='navText' style={sizeF} >{displayName}</Nav.Link>
                                 </Nav>
                             </Navbar.Collapse>
                         </Container>
@@ -96,7 +142,10 @@ function Issuer() {
                                         <Form>
                                             <Form.Group className="mb-3" controlId="formBasicEmail">
                                                 <Form.Label className='textColor'>Invitation Link: </Form.Label>
-                                                <Form.Control type="text" />
+                                                <div className='copy-text'>
+                                                    <input type="text" class="text" value="Msg!" disabled />
+                                                    <CopyToClipboardButton text="Hello" />
+                                                </div>
                                             </Form.Group>
                                         </Form>
 
@@ -117,7 +166,7 @@ function Issuer() {
                             </Row>
 
                             {/* Row2 */}
-                            {connection && (<Row className='ncRow'>
+                            {schemaCheck && (<Row className='ncRow'>
                                 <Row className='mailtitle'>
                                     <Col>
                                         <h2>New Card</h2>
@@ -136,8 +185,12 @@ function Issuer() {
 
                                     <Col>
                                         <Form.Group className="mb-3" controlId="formBasicEmail">
-                                            <Form.Label className='textColor'>Holder name: </Form.Label>
-                                            <Form.Control type="text" />
+                                            <Form.Label className='textColor'>Schema ID: </Form.Label>
+                                            <Form.Control
+                                                type="text"
+                                                onChange={(e) => {
+                                                    setSchemaID(e.target.value);
+                                                }} />
                                         </Form.Group>
 
                                     </Col>
@@ -149,8 +202,13 @@ function Issuer() {
 
                                         <Form>
                                             <Form.Group className="mb-3" controlId="formBasicEmail">
-                                                <Form.Label className='textColor'>Invitation Link: </Form.Label>
-                                                <Form.Control type="text" />
+                                                <Form.Label className='textColor'>Cred-def-ID: </Form.Label>
+                                                <Form.Control
+                                                    type="text"
+                                                    onChange={(e) => {
+                                                        setCredDef(e.target.value);
+                                                    }}
+                                                />
                                             </Form.Group>
                                         </Form>
 

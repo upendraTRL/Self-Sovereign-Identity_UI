@@ -1,5 +1,5 @@
 
-import { Button, Container, Row, Col, Form, Nav, Navbar, NavDropdown } from 'react-bootstrap';
+import { Button, Container, Row, Col, Form, Nav, Navbar, NavDropdown, Dropdown, DropdownButton } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './holder.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -57,29 +57,30 @@ function HolderButton({ value }) {
 // }
 
 function Holder() {
+
+    //Verifier enable and disable
+    const [enableText, setEnableText] = useState(false);
+
+    const handleRadioChange = (event) => {
+        if (event.target.value === 'verifier') {
+            setEnableText(true);
+        } else {
+            setEnableText(false);
+        }
+    };
+
     //Aadhar array
     const firstUser = {
         id: 0, name: 'Ram', age: 20
     }
 
-    const arrayTest = [
-        { id: 0, name: 'Krishna', age: 24 },
-        { id: 1, name: 'Messi', age: 25 },
-        { id: 2, name: 'Steve', age: 42 }
-    ]
+    // Presentation card dropdowns
 
-    const [listOfUsers, setListOfUsers] = useState(arrayTest);
+    const [selectedOption, setSelectedOption] = useState('');
 
-
-    //Collapse 2
-    const [selected, setSelected] = useState(null);
-
-    const toggle = (i) => {
-        if (selected === i) {
-            return setSelected(null);
-        }
-        setSelected(i);
-    }
+    const handleDropdownSelect = (option) => {
+        setSelectedOption(option);
+    };
 
     //Main
     return (
@@ -128,11 +129,7 @@ function Holder() {
                                         <Form>
                                             <Form.Group className="mb-3" controlId="formBasicEmail">
                                                 <Form.Label className='textColor' >Invitation message: </Form.Label>
-                                                <div className='copy-text'>
-                                                    <input type="text" class="text" value="Msg!" disabled />
-                                                    <CopyToClipboardButton text="Hello" />
-                                                </div>
-                                                {/* <Form.Control className='' type="text" value="Value" disabled /> */}
+                                                <Form.Control type="text" />
                                             </Form.Group>
                                         </Form>
 
@@ -142,8 +139,26 @@ function Holder() {
                                 <Row>
                                     <Col>
                                         <Form.Group className="mb-3" controlId="formBasicEmail">
-                                            <Form.Label className='textColor'>Verifier/Issuer: </Form.Label>
-                                            <Form.Control type="text" />
+                                            <Form.Label className='textColor'>Type of User: </Form.Label>
+                                            <Form>
+                                                <Form.Check
+                                                    type="radio"
+                                                    id="radio-button-1"
+                                                    label="Verifier"
+                                                    name="radioButtons"
+                                                    value="verifier"
+                                                    onChange={handleRadioChange}
+                                                />
+                                                <Form.Check
+                                                    type="radio"
+                                                    id="radio-button-2"
+                                                    label="Issuer"
+                                                    name="radioButtons"
+                                                    value="option2"
+                                                    onChange={handleRadioChange}
+                                                />
+
+                                            </Form>
                                         </Form.Group>
 
                                     </Col>
@@ -151,7 +166,9 @@ function Holder() {
                                     <Col>
                                         <Form.Group className="mb-3" controlId="formBasicEmail">
                                             <Form.Label className='textColor'>Verifier name: </Form.Label>
-                                            <Form.Control type="text" />
+                                            {enableText && (
+                                                <Form.Control type="text" />
+                                            )}
                                         </Form.Group>
 
                                     </Col>
@@ -187,7 +204,20 @@ function Holder() {
                                     <Col>
                                         <Form.Group className="mb-3" controlId="formBasicEmail">
                                             <Form.Label className='textColor'>To: </Form.Label>
-                                            <Form.Control type="text" />
+
+                                            <Form>
+                                                <DropdownButton
+                                                    id="dropdown-button"
+                                                    title={selectedOption || 'Select an option'}
+                                                    onSelect={handleDropdownSelect}
+                                                >
+                                                    <Dropdown.Item eventKey="option1">Option 1</Dropdown.Item>
+                                                    <Dropdown.Item eventKey="option2">Option 2</Dropdown.Item>
+                                                    <Dropdown.Item eventKey="option3">Option 3</Dropdown.Item>
+                                                </DropdownButton>
+
+                                            </Form>
+
                                         </Form.Group>
 
                                     </Col>
@@ -195,7 +225,18 @@ function Holder() {
                                     <Col>
                                         <Form.Group className="mb-3" controlId="formBasicEmail">
                                             <Form.Label className='textColor'>Credential: </Form.Label>
-                                            <Form.Control type="text" />
+                                            <Form>
+                                                <DropdownButton
+                                                    id="dropdown-button"
+                                                    title={selectedOption || 'Select an option'}
+                                                    onSelect={handleDropdownSelect}
+                                                >
+                                                    <Dropdown.Item eventKey="option1">Option 1</Dropdown.Item>
+                                                    <Dropdown.Item eventKey="option2">Option 2</Dropdown.Item>
+                                                    <Dropdown.Item eventKey="option3">Option 3</Dropdown.Item>
+                                                </DropdownButton>
+
+                                            </Form>
                                         </Form.Group>
 
                                     </Col>
@@ -269,62 +310,13 @@ function Holder() {
                                                 </Form.Group>
                                             </Form>
                                         </Col>
-                                        <hr style={{ background: "black", height: "3px" }} />
+
                                     </Row>
 
 
                                     {/* Clp star */}
 
-                                    <div className={selected === true ? "content show" : "content"}>
-                                        <div className='usersDisplay'>
 
-
-                                            {listOfUsers.map((user) => {
-                                                return (
-
-                                                    // User list
-                                                    <Row>
-                                                        {/*Name & Age */}
-                                                        <Col>
-                                                            <Form>
-                                                                <Form.Group className="mb-3" controlId="formBasicEmail">
-                                                                    <Form.Label className='textColor'>Name: </Form.Label>
-                                                                    <Form.Control type="text" value={user.name} disabled />
-                                                                </Form.Group>
-
-                                                                <Form.Group className="mb-3" controlId="formBasicEmail">
-                                                                    <Form.Label className='textColor'>Age: </Form.Label>
-                                                                    <Form.Control type="number" value={user.age} disabled />
-                                                                </Form.Group>
-                                                            </Form>
-                                                        </Col>
-
-                                                        {/* Gender & address */}
-                                                        <Col>
-                                                            {/* //Collapse use1 */}
-
-                                                            <Form>
-                                                                <Form.Group className="mb-3" controlId="formBasicEmail">
-                                                                    <Form.Label className='textColor'>Gender: </Form.Label>
-                                                                    <Form.Control type="text" value="Male" disabled />
-                                                                </Form.Group>
-
-                                                                <Form.Group className="mb-3" controlId="formBasicEmail">
-                                                                    <Form.Label className='textColor'>Address: </Form.Label>
-                                                                    <Form.Control type="text" value="Pune" disabled />
-                                                                </Form.Group>
-                                                            </Form>
-                                                        </Col>
-                                                        <hr style={{ background: "black", height: "3px" }} />
-                                                    </Row>
-                                                );
-                                            })}
-                                        </div>
-                                    </div>
-
-                                    <div className="titleC" onClick={() => toggle(true)}>
-                                        <span>{selected === true ? 'Show Less' : 'Show More'}</span>
-                                    </div>
 
                                     {/* Clp end */}
 
