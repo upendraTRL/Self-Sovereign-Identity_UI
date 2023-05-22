@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import './issuer.css';
 import { faCopy } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import axios from 'axios';
 
 //Copy to clipboard
 function CopyToClipboardButton({ text }) {
@@ -79,6 +80,17 @@ function Issuer() {
 
     var schemaCheck = "abc"
 
+    //Display username, method 2
+    const [username, setUsername] = useState('');
+
+    useEffect(() => {
+        const storedUsername = localStorage.getItem('username');
+        if (storedUsername) {
+            setUsername(storedUsername);
+        }
+    }, []);
+
+
 
 
     return (
@@ -96,7 +108,7 @@ function Issuer() {
                                     <Nav.Link href="#home" className='navText' style={sizeF} >{displayID}</Nav.Link>
                                 </Nav>
                                 <Nav className="ml-auto">
-                                    <Nav.Link href="#home" className='navText' style={sizeF} >{displayName}</Nav.Link>
+                                    <Nav.Link href="#home" className='navText' style={sizeF} >{username}</Nav.Link>
                                 </Nav>
                             </Navbar.Collapse>
                         </Container>

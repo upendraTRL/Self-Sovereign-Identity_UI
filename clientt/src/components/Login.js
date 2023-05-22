@@ -31,6 +31,8 @@ function Login() {
             } else {
                 // <Navigate to="/registration" replace={true} />
 
+                localStorage.setItem('username', username);
+
                 if (response.data[0].usertype == "holder") {
                     // console.log("HOLDERRRRRRR");
                     navigate("/holder");

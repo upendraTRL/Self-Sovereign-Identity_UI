@@ -77,9 +77,14 @@ function Holder() {
     // Presentation card dropdowns
 
     const [selectedOption, setSelectedOption] = useState('');
-
     const handleDropdownSelect = (option) => {
         setSelectedOption(option);
+    };
+
+    const dropdownButtonStyle = {
+        backgroundColor: 'white',
+        border: 'none',
+        color: '#FFFFFF',
     };
 
     //Main
@@ -210,14 +215,14 @@ function Holder() {
                                                     id="dropdown-button"
                                                     title={selectedOption || 'Select an option'}
                                                     onSelect={handleDropdownSelect}
+                                                // style={dropdownButtonStyle}
                                                 >
                                                     <Dropdown.Item eventKey="option1">Option 1</Dropdown.Item>
                                                     <Dropdown.Item eventKey="option2">Option 2</Dropdown.Item>
                                                     <Dropdown.Item eventKey="option3">Option 3</Dropdown.Item>
                                                 </DropdownButton>
-
+                                                {/* <Form.Control type="text" disabled={!selectedOption} style={{ backgroundColor: 'white' }} /> */}
                                             </Form>
-
                                         </Form.Group>
 
                                     </Col>
@@ -230,6 +235,7 @@ function Holder() {
                                                     id="dropdown-button"
                                                     title={selectedOption || 'Select an option'}
                                                     onSelect={handleDropdownSelect}
+                                                    style={{ color: 'white' }}
                                                 >
                                                     <Dropdown.Item eventKey="option1">Option 1</Dropdown.Item>
                                                     <Dropdown.Item eventKey="option2">Option 2</Dropdown.Item>

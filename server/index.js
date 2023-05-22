@@ -140,25 +140,14 @@ app.post("/login", (req, res) => {
 
 //Send schema_id to Issuer, using API
 //Can send * from users in future
-app.post("/users:username", (req, res) => {
-    const username = req.body.username;
-
-    db.query(
-        "SELECT * FROM users WHERE username = ?",
-        username,
-        (err, result) => {
-            if (err) {
-                res.send({ error: err.message });
-            } else {
-                if (result.length > 0) {
-                    res.send(result[0]);
-                } else {
-                    res.send({ message: "User not found" });
-                }
-            }
-        }
-    );
+app.get("/users", (req, res) => {
+    const query = 'SELECT schema_id FROM users WHERE id = 1';
+    db.query(query, (err, result) => {
+        if (err) return res.json(err);
+        return res.json(result);
+    });
 });
+
 
 
 app.listen(3001, () => {
