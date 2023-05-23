@@ -160,9 +160,24 @@ app.post("/login", (req, res) => {
 
 
 //New try
+// app.get("/users", (req, res) => {
+//     const username = req.query.username; // Get the id from the request query parameters
+//     const query = `SELECT schema_id FROM users WHERE username = ?`;
+
+//     console.log("Name = ", username);
+
+//     db.query(query, [username], (err, result) => {
+//         if (err) {
+//             return res.json(err);
+//         }
+//         return res.json(result);
+//     });
+// });
+
 app.get("/users", (req, res) => {
-    const username = req.query.username; // Get the id from the request query parameters
-    const query = `SELECT schema_id FROM users WHERE id = ?`;
+    const username = req.query.username; // Assuming the username is included in the request query parameters
+
+    const query = `SELECT schema_id FROM users WHERE username = ?`;
 
     console.log("Name = ", username);
 
@@ -170,9 +185,12 @@ app.get("/users", (req, res) => {
         if (err) {
             return res.json(err);
         }
+
+        console.log("result = ", result);
         return res.json(result);
     });
 });
+
 
 
 app.listen(3001, () => {

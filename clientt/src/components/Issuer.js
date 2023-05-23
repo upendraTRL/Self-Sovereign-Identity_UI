@@ -55,6 +55,7 @@ function Issuer() {
 
     Axios.defaults.withCredentials = true;
 
+    //Calling API to store newcard data
     const newcard = () => {
         Axios.post("http://localhost:3001/newcard", {
             schema_id: schemaID,
@@ -95,7 +96,27 @@ function Issuer() {
     var schemaCheck = '0'
 
 
+    //sending username and fetching schema_id, try 2
+    const [schemaId, setSchemaId] = useState('');
 
+    useEffect(() => {
+        // Fetch username from localStorage
+        const username = localStorage.getItem('username');
+
+        // Make API call to fetch user schema_id
+        Axios.get('http://localhost:3001/users', {
+            params: {
+                username: username
+            }
+        })
+            .then(response => {
+                console.log(response.data[0].schema_id);
+                setSchemaId(response.data[0].schema_id);
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    }, []);
 
 
 
@@ -111,7 +132,7 @@ function Issuer() {
                             <Navbar.Toggle aria-controls="basic-navbar-nav" />
                             <Navbar.Collapse id="basic-navbar-nav">
                                 <Nav className="me-auto">
-                                    <Nav.Link href="#home" className='navText' style={sizeF} >{displayID}</Nav.Link>
+                                    <Nav.Link href="#home" className='navText' style={sizeF} >{schemaId}</Nav.Link>
                                 </Nav>
                                 <Nav className="ml-auto">
                                     <Nav.Link href="#home" className='navText' style={sizeF} >{username}</Nav.Link>
