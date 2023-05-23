@@ -93,7 +93,7 @@ function Issuer() {
             .catch(err => console.log(err));
     }, []);
 
-    var schemaCheck = '0'
+
 
 
     //sending username and fetching schema_id, try 2
@@ -118,7 +118,7 @@ function Issuer() {
             });
     }, []);
 
-
+    var schemaCheck = schemaId;
 
     return (
 
@@ -127,6 +127,7 @@ function Issuer() {
 
                 <Container>
 
+                    {/* Navbar */}
                     <Navbar className='navBarI'>
                         <Container>
                             <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -147,8 +148,8 @@ function Issuer() {
                         {/* Col Left */}
                         <Col className='colLeft'>
 
-                            {/* Row1 */}
-                            <Row className='leftRow1'>
+                            {/* Invitation card */}
+                            {(schemaCheck == '0') ? null : (<Row className='leftRow1'>
                                 <Row className='mailtitle'>
                                     <Col>
                                         <h2>Invitation</h2>
@@ -202,9 +203,9 @@ function Issuer() {
                                     </Col>
                                 </Row>
 
-                            </Row>
+                            </Row>)}
 
-                            {/* Row2 */}
+                            {/* New card */}
                             {(schemaCheck == '0') ? (<Row className='ncRow' disabled={schemaCheck !== '0'}>
                                 <Row className='mailtitle'>
                                     <Col>
@@ -271,8 +272,8 @@ function Issuer() {
                         </Col>
 
 
-                        {/* Column Right */}
-                        <Col className='rightCol'>
+                        {/* Credentials card */}
+                        {(schemaCheck == '0') ? null : (<Col className='rightCol'>
 
                             {/* Row1 */}
                             <Row className='mailtitle'>
@@ -336,7 +337,7 @@ function Issuer() {
                                 </Row>
                             </Row>
 
-                        </Col>
+                        </Col>)}
 
                     </Row>
                 </Container>
