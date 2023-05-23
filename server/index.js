@@ -1,4 +1,6 @@
 // css
+//Tasks:
+// 1. fetch username from localStorage
 
 const express = require("express");
 const mysql = require("mysql2"); //imp to use mysql2 instead of mysql1, to avoid following error.
@@ -56,14 +58,18 @@ app.post("/register", (req, res) => {
     const usertype = req.body.usertype;
     const displayname = req.body.displayname;
 
+    //Default entry
+    const schema_id = "0";
+    const cred_def_id = "0";
+
     bcrypt.hash(password, saltRounds, (err, hash) => {
         if (err) {
             console.log(err);
         }
 
         db.query(
-            "INSERT INTO users (username, password, usertype, displayname) VALUES (?,?,?,?)",
-            [username, hash, usertype, displayname],
+            "INSERT INTO users (username, password, usertype, displayname, schema_id, cred_def_id) VALUES (?,?,?,?,?,?)",
+            [username, hash, usertype, displayname, schema_id, cred_def_id],
             (err, result) => {
                 console.log(result);
                 if (typeof err === "object") {
@@ -76,29 +82,24 @@ app.post("/register", (req, res) => {
     });
 });
 
-app.post("/newcardenter", (req, res) => {
+app.post("/newcard", (req, res) => {
+    const schema_id = req.body.schema_id;
+    const cred_def_id = req.body.cred_def_id;
     const username = req.body.username;
-    const password = req.body.password;
 
-
-    bcrypt.hash(password, saltRounds, (err, hash) => {
-        if (err) {
+    db.query(
+        "UPDATE users SET schema_id = ?, cred_def_id = ? WHERE username = ?",
+        [schema_id, cred_def_id, username],
+        (err, result) => {
+            console.log(result);
+            if (typeof err === "object") {
+                console.log('Successful entered!');
+                res.status(200).send("Success");
+            }
             console.log(err);
         }
+    );
 
-        db.query(
-            "INSERT INTO users (username, password, usertype, displayname) VALUES (?,?,?,?)",
-            [username, hash, usertype, displayname],
-            (err, result) => {
-                console.log(result);
-                if (typeof err === "object") {
-                    console.log('Successful registration!');
-                    res.status(200).send("Success");
-                }
-                console.log(err);
-            }
-        );
-    });
 });
 
 

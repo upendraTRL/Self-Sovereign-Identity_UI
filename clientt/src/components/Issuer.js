@@ -1,10 +1,13 @@
+// Tasks:
+// 1. fetch schema_id from DB and store in schemaCheck
+
 import { useEffect, useState } from 'react';
-import { Button, Container, Row, Col, Form, Nav, Navbar, NavDropdown } from 'react-bootstrap';
+import { Button, Container, Row, Col, Form, Nav, Navbar } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './issuer.css';
 import { faCopy } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import axios from 'axios';
+import Axios from "axios";
 
 //Copy to clipboard
 function CopyToClipboardButton({ text }) {
@@ -22,25 +25,6 @@ const sizeF = {
 
 function HolderButton({ value }) {
 
-    //New card data fill API call
-    // const enterNewCard = () => {
-    //     Axios.post("http://localhost:3001/newcardenter", {
-    //         cred: usernameReg,
-    //         password: passwordReg,
-    //         usertype: usertypeReg,
-    //         displayname: displaynameReg,
-    //     }).then((response) => {
-    //         if (response.status == 200) {
-    //             if (window.confirm("Saved!")) {
-    //                 // window.location.href = "http://localhost:3000/"
-    //             }
-    //         }
-    //         console.log(response);
-    //     });
-
-    // };
-
-
     const buttonStyle = {
         backgroundColor: '#087494',
         border: 'none',
@@ -48,7 +32,6 @@ function HolderButton({ value }) {
     };
     return (
         <Button
-            // onClick={enterNewCard}
             style={buttonStyle}>{value}
         </Button>
     )
@@ -56,9 +39,40 @@ function HolderButton({ value }) {
 
 function Issuer() {
 
-    //enter new card
+    //New card data fill API call
     const [credDef, setCredDef] = useState("");
     const [schemaID, setSchemaID] = useState("");
+    const [username, setUsername] = useState("");
+
+    //Store username to local storage and display to Nav Bar
+    useEffect(() => {
+        const storedUsername = localStorage.getItem('username');
+        if (storedUsername) {
+            setUsername(storedUsername);
+        }
+    }, []);
+
+
+    Axios.defaults.withCredentials = true;
+
+    const newcard = () => {
+        Axios.post("http://localhost:3001/newcard", {
+            schema_id: schemaID,
+            cred_def_id: credDef,
+            username: username,
+        }).then((response) => {
+            if (response.status == 200) {
+                if (window.confirm("Successfully entered!")) {
+                    // window.location.href = "http://localhost:3000/"
+                }
+            }
+            console.log("New card = ", response);
+        });
+
+    };
+
+
+
 
 
     //fetch id,username,schema_id from users table
@@ -78,17 +92,9 @@ function Issuer() {
             .catch(err => console.log(err));
     }, []);
 
-    var schemaCheck = "abc"
+    var schemaCheck = '0'
 
-    //Display username, method 2
-    const [username, setUsername] = useState('');
 
-    useEffect(() => {
-        const storedUsername = localStorage.getItem('username');
-        if (storedUsername) {
-            setUsername(storedUsername);
-        }
-    }, []);
 
 
 
@@ -178,7 +184,7 @@ function Issuer() {
                             </Row>
 
                             {/* Row2 */}
-                            {schemaCheck && (<Row className='ncRow'>
+                            {(schemaCheck == '0') ? (<Row className='ncRow' disabled={schemaCheck !== '0'}>
                                 <Row className='mailtitle'>
                                     <Col>
                                         <h2>New Card</h2>
@@ -192,7 +198,7 @@ function Issuer() {
 
                                 <Row>
                                     <Col className='inviBtn'>
-                                        <HolderButton value="Create Invitation" />
+                                        <button onClick={newcard}> Create Invitation </button>
                                     </Col>
 
                                     <Col>
@@ -238,7 +244,7 @@ function Issuer() {
                                     </Col>
                                 </Row>
 
-                            </Row>)}
+                            </Row>) : null}
 
 
                         </Col>
