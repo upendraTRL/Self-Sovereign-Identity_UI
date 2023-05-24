@@ -191,6 +191,24 @@ app.get("/users", (req, res) => {
     });
 });
 
+//Connection table data fetch, API
+app.get("/toholder", (req, res) => {
+    const username = req.query.username;
+
+    const query = `SELECT connection_name FROM connection WHERE username = ?`;
+
+    console.log("connection table = ", username);
+
+    db.query(query, [username], (err, result) => {
+        if (err) {
+            return res.json(err);
+        }
+
+        console.log("result = ", result);
+        return res.json(result);
+    });
+});
+
 
 
 app.listen(3001, () => {

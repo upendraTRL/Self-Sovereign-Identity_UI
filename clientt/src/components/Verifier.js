@@ -63,6 +63,7 @@ function Verifier() {
 
                 <Container>
 
+                    {/* Nav bar */}
                     <Navbar className='navBarV'>
                         <Container>
                             <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -83,7 +84,7 @@ function Verifier() {
                         {/* Col Left */}
                         <Col className='colLeft'>
 
-                            {/* Row1 */}
+                            {/* Invitation card */}
                             <Row className='leftRow1'>
                                 <Row className='mailtitle'>
                                     <Col>
@@ -144,7 +145,7 @@ function Verifier() {
                         {/* Column Right */}
                         <Col className='rightCol'>
 
-                            {/* Row1 */}
+                            {/* Verification card */}
                             <Row className='mailtitle'>
                                 <Col>
                                     <h2>Verifications</h2>
@@ -154,7 +155,7 @@ function Verifier() {
                                 </Col>
                             </Row>
 
-                            {/* Row2 */}
+                            {/* Verification aadhar */}
                             <Row>
                                 <Row className='rightBlock1'>
                                     <Row className='title1'>
@@ -198,7 +199,7 @@ function Verifier() {
                                 </Row>
                             </Row>
 
-                            {/* Row3 */}
+                            {/* Verification pan */}
                             <Row>
                                 <Row className='rightBlock2'>
                                     <Row className='title1'>

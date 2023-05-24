@@ -75,7 +75,6 @@ function Issuer() {
     //sending username and fetching schema_id, try 2
     const [schemaId, setSchemaId] = useState('');
     const [displayId, setDisplayId] = useState();
-    const [displayName, setDisplayName] = useState();
 
     useEffect(() => {
         // Fetch username from localStorage
@@ -97,14 +96,39 @@ function Issuer() {
             });
     }, []);
 
+    localStorage.setItem('id', displayId);
     var schemaCheck = schemaId;
 
-    
+
     // To holder dropdown
     const [selectedOption, setSelectedOption] = useState('');
     const handleDropdownSelect = (option) => {
         setSelectedOption(option);
     };
+
+    //To holder fetch data from connection table
+    const [connectionName, setConnectionName] = useState([]);
+    useEffect(() => {
+
+        const username = localStorage.getItem('username');
+
+        // Make API call to fetch user schema_id
+        Axios.get('http://localhost:3001/toholder', {
+            params: {
+                username: username
+            }
+        })
+            .then(response => {
+                console.log(response.data);
+                setConnectionName(response.data);
+                console.log("Conn", connectionName);
+                // setSchemaId(response.data[0].schema_id);
+                // setDisplayId(response.data[0].id);
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    }, []);
 
     return (
 
@@ -286,9 +310,9 @@ function Issuer() {
                                                     onSelect={handleDropdownSelect}
                                                 // style={dropdownButtonStyle}
                                                 >
-                                                    <Dropdown.Item eventKey="option1">Option 1</Dropdown.Item>
-                                                    <Dropdown.Item eventKey="option2">Option 2</Dropdown.Item>
-                                                    <Dropdown.Item eventKey="option3">Option 3</Dropdown.Item>
+                                                    {connectionName.map((item, index) => (
+                                                        <Dropdown.Item key={index} eventKey={item.connection_name}>{item.connection_name}</Dropdown.Item>
+                                                    ))}
                                                 </DropdownButton>
                                                 {/* <Form.Control type="text" disabled={!selectedOption} style={{ backgroundColor: 'white' }} /> */}
                                             </Form>
