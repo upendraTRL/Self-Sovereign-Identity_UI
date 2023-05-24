@@ -177,7 +177,7 @@ app.post("/login", (req, res) => {
 app.get("/users", (req, res) => {
     const username = req.query.username; // Assuming the username is included in the request query parameters
 
-    const query = `SELECT schema_id FROM users WHERE username = ?`;
+    const query = `SELECT * FROM users WHERE username = ?`;
 
     console.log("Name = ", username);
 

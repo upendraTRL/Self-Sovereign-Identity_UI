@@ -1,6 +1,8 @@
-import { Button, Container, Row, Col, Form, Nav, Navbar, NavDropdown } from 'react-bootstrap';
+import { Button, Container, Row, Col, Form, Nav, Navbar, Dropdown, DropdownButton } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './verifier.css';
+import { useState, useEffect } from 'react';
+import Axios from "axios";
 
 const sizeF = {
     fontSize: '24px'
@@ -18,6 +20,42 @@ function HolderButton({ value }) {
 }
 
 function Verifier() {
+
+    //sending username and fetching schema_id, try 2
+    // const [schemaId, setSchemaId] = useState('');
+    const [displayId, setDisplayId] = useState();
+    const [username, setUsername] = useState("");
+
+    //Store username to local storage and display to Nav Bar
+    useEffect(() => {
+        const storedUsername = localStorage.getItem('username');
+        if (storedUsername) {
+            setUsername(storedUsername);
+        }
+    }, []);
+
+    useEffect(() => {
+        // Fetch username from localStorage
+        const username = localStorage.getItem('username');
+
+        // Make API call to fetch user schema_id
+        Axios.get('http://localhost:3001/users', {
+            params: {
+                username: username
+            }
+        })
+            .then(response => {
+                console.log(response.data[0].schema_id);
+                // setSchemaId(response.data[0].schema_id);
+                setDisplayId(response.data[0].id);
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    }, []);
+
+
+    //Main
     return (
 
         <div className="Holderr">
@@ -30,10 +68,10 @@ function Verifier() {
                             <Navbar.Toggle aria-controls="basic-navbar-nav" />
                             <Navbar.Collapse id="basic-navbar-nav">
                                 <Nav className="me-auto">
-                                    <Nav.Link href="#home" className='navText' style={sizeF} >ACME</Nav.Link>
+                                    <Nav.Link href="#home" className='navText' style={sizeF} >{displayId}</Nav.Link>
                                 </Nav>
                                 <Nav className="ml-auto">
-                                    <Nav.Link href="#home" className='navText' style={sizeF} >Verifier</Nav.Link>
+                                    <Nav.Link href="#home" className='navText' style={sizeF} >{username}</Nav.Link>
                                 </Nav>
                             </Navbar.Collapse>
                         </Container>

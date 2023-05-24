@@ -2,7 +2,7 @@
 // 1. fetch schema_id from DB and store in schemaCheck
 
 import { useEffect, useState } from 'react';
-import { Button, Container, Row, Col, Form, Nav, Navbar } from 'react-bootstrap';
+import { Button, Container, Row, Col, Form, Nav, Navbar, Dropdown, DropdownButton } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './issuer.css';
 import { faCopy } from '@fortawesome/free-solid-svg-icons';
@@ -72,32 +72,10 @@ function Issuer() {
 
     };
 
-
-
-
-
-    //fetch id,username,schema_id from users table
-    // const [connection, setConnection] = useState();
-    const [displayID, setDisplayID] = useState();
-    const [displayName, setDisplayName] = useState();
-
-    useEffect(() => {
-        fetch('http://localhost:3001/users')
-            .then(res => res.json())
-            .then(data => {
-                // console.log(data)
-                setDisplayID(data[0].id)
-                setDisplayName(data[0].username)
-                console.log("Issuer schema_id ", data[0].id, ", ", data[0].username, ", ", data[0].schema_id)
-            })
-            .catch(err => console.log(err));
-    }, []);
-
-
-
-
     //sending username and fetching schema_id, try 2
     const [schemaId, setSchemaId] = useState('');
+    const [displayId, setDisplayId] = useState();
+    const [displayName, setDisplayName] = useState();
 
     useEffect(() => {
         // Fetch username from localStorage
@@ -112,6 +90,7 @@ function Issuer() {
             .then(response => {
                 console.log(response.data[0].schema_id);
                 setSchemaId(response.data[0].schema_id);
+                setDisplayId(response.data[0].id);
             })
             .catch(error => {
                 console.log(error);
@@ -119,6 +98,13 @@ function Issuer() {
     }, []);
 
     var schemaCheck = schemaId;
+
+    
+    // To holder dropdown
+    const [selectedOption, setSelectedOption] = useState('');
+    const handleDropdownSelect = (option) => {
+        setSelectedOption(option);
+    };
 
     return (
 
@@ -133,7 +119,7 @@ function Issuer() {
                             <Navbar.Toggle aria-controls="basic-navbar-nav" />
                             <Navbar.Collapse id="basic-navbar-nav">
                                 <Nav className="me-auto">
-                                    <Nav.Link href="#home" className='navText' style={sizeF} >{schemaId}</Nav.Link>
+                                    <Nav.Link href="#home" className='navText' style={sizeF} >{displayId}</Nav.Link>
                                 </Nav>
                                 <Nav className="ml-auto">
                                     <Nav.Link href="#home" className='navText' style={sizeF} >{username}</Nav.Link>
@@ -293,7 +279,19 @@ function Issuer() {
                                     <Col>
                                         <Form.Group className="mb-3" controlId="formBasicEmail">
                                             <Form.Label className='textColor'>To Holder: </Form.Label>
-                                            <Form.Control type="text" />
+                                            <Form>
+                                                <DropdownButton
+                                                    id="dropdown-button"
+                                                    title={selectedOption || 'Select an option'}
+                                                    onSelect={handleDropdownSelect}
+                                                // style={dropdownButtonStyle}
+                                                >
+                                                    <Dropdown.Item eventKey="option1">Option 1</Dropdown.Item>
+                                                    <Dropdown.Item eventKey="option2">Option 2</Dropdown.Item>
+                                                    <Dropdown.Item eventKey="option3">Option 3</Dropdown.Item>
+                                                </DropdownButton>
+                                                {/* <Form.Control type="text" disabled={!selectedOption} style={{ backgroundColor: 'white' }} /> */}
+                                            </Form>
                                         </Form.Group>
 
                                     </Col>

@@ -1,10 +1,11 @@
 
-import { Button, Container, Row, Col, Form, Nav, Navbar, NavDropdown, Dropdown, DropdownButton } from 'react-bootstrap';
+import { Button, Container, Row, Col, Form, Nav, Navbar, Dropdown, DropdownButton } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './holder.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCopy } from '@fortawesome/free-solid-svg-icons';
 import { useState, useEffect } from 'react';
+import Axios from "axios";
 
 
 //Copy to clipboard
@@ -41,20 +42,7 @@ function HolderButton({ value }) {
     )
 }
 
-//Collapse
-// function PanelC({ title, children }) {
-//     const [isActive, setIsActive] = useState(false);
-//     return (
-//         <div className='collapsePanel'>
-//             <h3>{title}</h3>
-//             {isActive ? (
-//                 <p>{children}</p>
-//             ) : (
-//                 <button onClick={() => setIsActive(true)}>Show</button>
-//             )}
-//         </div>
-//     )
-// }
+
 
 function Holder() {
 
@@ -75,7 +63,6 @@ function Holder() {
     }
 
     // Presentation card dropdowns
-
     const [selectedOption, setSelectedOption] = useState('');
     const handleDropdownSelect = (option) => {
         setSelectedOption(option);
@@ -86,6 +73,39 @@ function Holder() {
         border: 'none',
         color: '#FFFFFF',
     };
+
+    //sending username and fetching schema_id, try 2
+    // const [schemaId, setSchemaId] = useState('');
+    const [displayId, setDisplayId] = useState();
+    const [username, setUsername] = useState("");
+
+    //Store username to local storage and display to Nav Bar
+    useEffect(() => {
+        const storedUsername = localStorage.getItem('username');
+        if (storedUsername) {
+            setUsername(storedUsername);
+        }
+    }, []);
+
+    useEffect(() => {
+        // Fetch username from localStorage
+        const username = localStorage.getItem('username');
+
+        // Make API call to fetch user schema_id
+        Axios.get('http://localhost:3001/users', {
+            params: {
+                username: username
+            }
+        })
+            .then(response => {
+                console.log(response.data[0].schema_id);
+                // setSchemaId(response.data[0].schema_id);
+                setDisplayId(response.data[0].id);
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    }, []);
 
     //Main
     return (
@@ -100,10 +120,10 @@ function Holder() {
                         <Navbar.Toggle aria-controls="basic-navbar-nav" />
                         <Navbar.Collapse id="basic-navbar-nav">
                             <Nav className="me-auto">
-                                <UserName name="Alice" />
+                                <Nav.Link href="#home" className='navText' style={sizeF} >{displayId}</Nav.Link>
                             </Nav>
                             <Nav className="ml-auto">
-                                <Nav.Link href="#home" className='navText' style={sizeF} >Holder</Nav.Link>
+                                <Nav.Link href="#home" className='navText' style={sizeF} >{username}</Nav.Link>
                             </Nav>
                         </Navbar.Collapse>
                     </Container>
