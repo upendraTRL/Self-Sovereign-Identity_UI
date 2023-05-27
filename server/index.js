@@ -12,6 +12,7 @@ const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
+require('dotenv').config();
 
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
@@ -51,7 +52,7 @@ app.use(
 );
 
 
-
+//Registration API
 app.post("/register", (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
@@ -82,6 +83,7 @@ app.post("/register", (req, res) => {
     });
 });
 
+//Issuer New Card API
 app.post("/newcard", (req, res) => {
     const schema_id = req.body.schema_id;
     const cred_def_id = req.body.cred_def_id;
@@ -174,6 +176,7 @@ app.post("/login", (req, res) => {
 //     });
 // });
 
+//Fetch all user details, API
 app.get("/users", (req, res) => {
     const username = req.query.username; // Assuming the username is included in the request query parameters
 
@@ -191,7 +194,7 @@ app.get("/users", (req, res) => {
     });
 });
 
-//Connection table data fetch, API
+//Holder, Connection table data fetch, API
 app.get("/toholder", (req, res) => {
     const username = req.query.username;
 
@@ -211,8 +214,104 @@ app.get("/toholder", (req, res) => {
 
 
 
-app.listen(3001, () => {
-    console.log("running server");
+//////////Gaurav's API///////////
+///  axios for remote API call
+const axios = require('axios');
+
+
+//create connection invitation
+app.post("/connections/create", (req, res) => {
+
+    console.log("Inside create connections")
+    console.log("req ttyype ::::", typeof (req));
+    console.log("req ::::", req.body.userPort);
+    console.log("Hname ::::", req.body.connection_name);
+    console.log("Hname ::::", req.body.id);
+    console.log("Hname ::::", req.body.username);
+    let data = req.body.userPort
+    axios.post(`http://${process.env.NEST_IP}:${process.env.NEST_PORT}/connections/create-invitation`, {
+        data
+    })
+        .then(response => {
+            console.log("response from node ::::",response.data);
+
+            //Store data in connection table
+            const id = req.body.id;
+            const connection_name = req.body.connection_name;
+            const username = req.body.username;
+            const connection_id = response.data.connection_id;
+
+            console.log(id, username, connection_id, connection_name);
+
+            db.query(
+                "INSERT INTO connection (connection_id, connection_name, id, username) VALUES (?,?,?,?)",
+                [connection_id, connection_name, id, username],
+                (err, result) => {
+                    console.log(result);
+                    if (typeof err === "object") {
+                        console.log('Connection Added!');
+                        res.status(200).send(response.data);
+                    }
+                    console.log(err);
+                }
+            );
+          
+
+        })
+        .catch(error => {
+            console.error(error);
+        });
+
+
+        
+})
+
+//receive connection invitation
+app.post("/connections/receive", (req, res) => {
+
+    console.log("Inside receive connections")
+    axios.post(`http://${process.env.NEST_IP}:${process.env.NEST_PORT}/connections/receive-invitation`)
+        .then(response => {
+            console.log(response.data);
+
+        })
+        .catch(error => {
+            console.error(error);
+        });
+})
+
+
+//send issue credential
+app.post("/issue-credential/send", (req, res) => {
+
+    console.log("Inside issue credential send")
+    axios.post(`http://${process.env.NEST_IP}:${process.env.NEST_PORT}/issue-credential/send-credential`)
+        .then(response => {
+            console.log(response.data);
+        })
+        .catch(error => {
+            console.error(error);
+        });
+})
+
+
+///// get credential by connection id
+app.get("/issue-credential/get-credentials", (req, res) => {
+
+    console.log("Inside issue credential send")
+    axios.get(`http://${process.env.NEST_IP}:${process.env.NEST_PORT}/issue-credential/records`)
+        .then(response => {
+            console.log(response.data);
+        })
+        .catch(error => {
+            console.error(error);
+        });
+})
+
+
+
+app.listen(process.env.SERVER, () => {
+    console.log("running server", process.env.SERVER);
 });
 
 

@@ -33,6 +33,7 @@ function HolderButton({ value }) {
     return (
         <Button
             style={buttonStyle}>{value}
+
         </Button>
     )
 }
@@ -64,7 +65,7 @@ function Issuer() {
         }).then((response) => {
             if (response.status == 200) {
                 if (window.confirm("Successfully entered!")) {
-                    // window.location.href = "http://localhost:3000/"
+                    window.location.href = "http://localhost:3000/issuer"
                 }
             }
             console.log("New card = ", response);
@@ -130,6 +131,42 @@ function Issuer() {
             });
     }, []);
 
+    //holder name field check
+    const [holderName, setHolderName] = useState('');
+    const [inviUrl, setInvitationUrl] = useState('');
+    const [stringInviUrl, setStringInviUrl] = useState('');
+    const handleCreateInvitation = () => {
+        console.log("Inviiiii holderrrr = ", holderName);
+        if (holderName.trim() === "") {
+            alert('Enter Holder Name');
+        } else {
+            // Create connection API
+            // console.log('Create Invitation clicked with a value:', holderName);
+            Axios.post("http://localhost:3001/connections/create", {
+                // userPort: displayId + 9000,
+                userPort: 9001,
+                connection_name: holderName,
+                id: displayId,
+                username: username
+            }).then(response => {
+                console.log("Create Connection = ", response.data);
+                setInvitationUrl(response.data.invitation);
+                const stringInviUrl2 = JSON.stringify(response.data.invitation);
+                setStringInviUrl(stringInviUrl2);
+                console.log("Invi URl final = ", stringInviUrl);
+
+                if (response.status == 200 || response.status == 201) {
+                    if (window.confirm("Connection created!")) {
+
+                    }
+                }
+            });
+
+            //Store Holder Name to DB
+
+        }
+    };
+
     return (
 
         <div className="Holderr">
@@ -147,6 +184,7 @@ function Issuer() {
                                 </Nav>
                                 <Nav className="ml-auto">
                                     <Nav.Link href="#home" className='navText' style={sizeF} >{username}</Nav.Link>
+                                    {/* <Nav.Link href="#home" className='navText' style={sizeF} >Aadhar Issuing Authority</Nav.Link> */}
                                 </Nav>
                             </Navbar.Collapse>
                         </Container>
@@ -173,13 +211,20 @@ function Issuer() {
 
                                 <Row>
                                     <Col className='inviBtn'>
-                                        <HolderButton value="Create Invitation" />
+                                        <Button
+                                            style={{ background: "#087494", color: "#FFFFFF", border: "none" }}
+                                            onClick={handleCreateInvitation} >
+                                            Create Invitation
+                                        </Button>
                                     </Col>
 
                                     <Col>
                                         <Form.Group className="mb-3" controlId="formBasicEmail">
                                             <Form.Label className='textColor'>Holder name: </Form.Label>
-                                            <Form.Control type="text" />
+                                            <Form.Control type="text" value={holderName} onChange={(e) => {
+                                                setHolderName(e.target.value);
+                                            }} />
+                                            {/* <Form.Control type="text" /> */}
                                         </Form.Group>
 
                                     </Col>
@@ -193,8 +238,8 @@ function Issuer() {
                                             <Form.Group className="mb-3" controlId="formBasicEmail">
                                                 <Form.Label className='textColor'>Invitation Link: </Form.Label>
                                                 <div className='copy-text'>
-                                                    <input type="text" class="text" value="Msg!" disabled />
-                                                    <CopyToClipboardButton text="Hello" />
+                                                    <input type="text" class="text" value={stringInviUrl} disabled />
+                                                    <CopyToClipboardButton text={stringInviUrl} />
                                                 </div>
                                             </Form.Group>
                                         </Form>

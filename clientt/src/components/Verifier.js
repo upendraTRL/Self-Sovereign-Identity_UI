@@ -72,7 +72,8 @@ function Verifier() {
                                     <Nav.Link href="#home" className='navText' style={sizeF} >{displayId}</Nav.Link>
                                 </Nav>
                                 <Nav className="ml-auto">
-                                    <Nav.Link href="#home" className='navText' style={sizeF} >{username}</Nav.Link>
+                                    <Nav.Link href="#home" className='navText' style={sizeF} >University</Nav.Link>
+                                    {/* <Nav.Link href="#home" className='navText' style={sizeF} >{username}</Nav.Link> */}
                                 </Nav>
                             </Navbar.Collapse>
                         </Container>
