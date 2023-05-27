@@ -228,12 +228,13 @@ app.post("/connections/create", (req, res) => {
     console.log("Hname ::::", req.body.connection_name);
     console.log("Hname ::::", req.body.id);
     console.log("Hname ::::", req.body.username);
-    let data = req.body.userPort
+    let port = req.body.userPort
+    let data = port + 9000
     axios.post(`http://${process.env.NEST_IP}:${process.env.NEST_PORT}/connections/create-invitation`, {
         data
     })
         .then(response => {
-            console.log("response from node ::::",response.data);
+            console.log("response from node ::::", response.data);
 
             //Store data in connection table
             const id = req.body.id;
@@ -255,7 +256,7 @@ app.post("/connections/create", (req, res) => {
                     console.log(err);
                 }
             );
-          
+
 
         })
         .catch(error => {
@@ -263,14 +264,18 @@ app.post("/connections/create", (req, res) => {
         });
 
 
-        
+
 })
 
 //receive connection invitation
 app.post("/connections/receive", (req, res) => {
 
+    console.log("userPort from holder: ", req.body);
+    
+    console.log("url from holder: ", );
+
     console.log("Inside receive connections")
-    axios.post(`http://${process.env.NEST_IP}:${process.env.NEST_PORT}/connections/receive-invitation`)
+    axios.post(`http://${process.env.NEST_IP}:${process.env.NEST_PORT}/connections/receive-invitation`,req.body)
         .then(response => {
             console.log(response.data);
 

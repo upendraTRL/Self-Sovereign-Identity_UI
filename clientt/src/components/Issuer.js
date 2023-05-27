@@ -144,7 +144,7 @@ function Issuer() {
             // console.log('Create Invitation clicked with a value:', holderName);
             Axios.post("http://localhost:3001/connections/create", {
                 // userPort: displayId + 9000,
-                userPort: 9001,
+                userPort: displayId,
                 connection_name: holderName,
                 id: displayId,
                 username: username
@@ -153,7 +153,9 @@ function Issuer() {
                 setInvitationUrl(response.data.invitation);
                 const stringInviUrl2 = JSON.stringify(response.data.invitation);
                 setStringInviUrl(stringInviUrl2);
-                console.log("Invi URl final = ", stringInviUrl);
+                console.log("Invi URl final = ", stringInviUrl2);
+                localStorage.setItem('userPort', displayId + 9000);
+                localStorage.setItem('inviUrl', stringInviUrl2);
 
                 if (response.status == 200 || response.status == 201) {
                     if (window.confirm("Connection created!")) {
@@ -221,9 +223,12 @@ function Issuer() {
                                     <Col>
                                         <Form.Group className="mb-3" controlId="formBasicEmail">
                                             <Form.Label className='textColor'>Holder name: </Form.Label>
-                                            <Form.Control type="text" value={holderName} onChange={(e) => {
-                                                setHolderName(e.target.value);
-                                            }} />
+                                            <Form.Control
+                                                type="text"
+                                                value={holderName}
+                                                onChange={(e) => {
+                                                    setHolderName(e.target.value);
+                                                }} />
                                             {/* <Form.Control type="text" /> */}
                                         </Form.Group>
 

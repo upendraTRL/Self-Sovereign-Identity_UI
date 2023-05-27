@@ -107,6 +107,40 @@ function Holder() {
             });
     }, []);
 
+
+    //holder name field check
+    const [holderName, setHolderName] = useState('');
+    // const [inviUrl, setInvitationUrl] = useState('');
+    const [stringInviUrl, setStringInviUrl] = useState('');
+    const handleCreateInvitation = () => {
+        console.log("Inviiiii holderrrr = ", holderName);
+        if (holderName.trim() === "") {
+            alert('Enter Holder Name');
+        } else {
+            const portGet = localStorage.getItem('id');
+            alert('Entered');
+            // Create connection API
+            // console.log('Create Invitation clicked with a value:', holderName);
+            let data = {
+                userPort: 9002,
+                url: holderName
+                }
+            Axios.post("http://localhost:3001/connections/receive", 
+                // userPort: displayId + 9000
+                data
+
+            ).then(response => {
+                console.log("Holder invitation = ", response.data);
+
+                if (response.status == 200 || response.status == 201) {
+                    if (window.confirm("Connection created!")) {
+
+                    }
+                }
+            });
+        }
+    };
+
     //Main
     return (
 
@@ -155,7 +189,13 @@ function Holder() {
                                         <Form>
                                             <Form.Group className="mb-3" controlId="formBasicEmail">
                                                 <Form.Label className='textColor' >Invitation message: </Form.Label>
-                                                <Form.Control type="text" />
+                                                <Form.Control
+                                                    type="text"
+                                                    value={holderName}
+                                                    onChange={(e) => {
+                                                        setHolderName(e.target.value);
+                                                    }}
+                                                />
                                             </Form.Group>
                                         </Form>
 
@@ -207,7 +247,11 @@ function Holder() {
                                     </Col>
                                     <Col>
                                         {/* <Button variant='info'>Refresh</Button> */}
-                                        <HolderButton value="Accept Invitation" />
+                                        <Button
+                                            style={{ background: "#087494", color: "#FFFFFF", border: "none" }}
+                                            onClick={handleCreateInvitation} >
+                                            Accept Invitation
+                                        </Button>
                                     </Col>
                                 </Row>
 
