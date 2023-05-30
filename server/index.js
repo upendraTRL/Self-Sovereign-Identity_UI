@@ -273,12 +273,54 @@ app.post("/connections/receive", (req, res) => {
 
     console.log("userPort from holder: ", req.body);
 
-    console.log("url from holder: ",);
+    let data = {
+        userPort: req.body.id + 9000,
+        url: req.body.url
+    }
 
-    console.log("Inside receive connections")
-    axios.post(`http://${process.env.NEST_IP}:${process.env.NEST_PORT}/connections/receive-invitation`, req.body)
+    const connection_id = response.data.connection_id;
+    const connection_name = req.body.verifierName;
+    const id = req.body.id;
+    const username = req.body.username;
+
+    db.query(
+        "INSERT INTO connection (connection_id, connection_name, id, username) VALUES (?,?,?,?)",
+        [connection_id, connection_name, id, username],
+        (err, result) => {
+            console.log(result);
+            if (typeof err === "object") {
+                console.log('Connection Added!');
+                res.status(200).send(response.data);
+            }
+            console.log(err);
+        }
+    );
+
+
+
+    axios.post(`http://${process.env.NEST_IP}:${process.env.NEST_PORT}/connections/receive-invitation`, data)
         .then(response => {
-            console.log(response.data);
+            console.log("response from node ::::", response.data);
+
+            //Store data in connection table
+            const connection_id = response.data.connection_id;
+            const connection_name = req.body.verifierName;
+            const id = req.body.id;
+            const username = req.body.username;
+
+            db.query(
+                "INSERT INTO connection (connection_id, connection_name, id, username) VALUES (?,?,?,?)",
+                [connection_id, connection_name, id, username],
+                (err, result) => {
+                    console.log(result);
+                    if (typeof err === "object") {
+                        console.log('Connection Added!');
+                        res.status(200).send(response.data);
+                    }
+                    console.log(err);
+                }
+            );
+
 
         })
         .catch(error => {

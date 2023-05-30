@@ -110,22 +110,25 @@ function Holder() {
 
     //holder name field check
     const [holderName, setHolderName] = useState('');
+    const [verifierName, setVerfierName] = useState('');
     // const [inviUrl, setInvitationUrl] = useState('');
     const [stringInviUrl, setStringInviUrl] = useState('');
     const handleCreateInvitation = () => {
         console.log("Inviiiii holderrrr = ", holderName);
         if (holderName.trim() === "") {
-            alert('Enter Holder Name');
+            alert('Enter Invitation Message');
         } else {
-            const portGet = localStorage.getItem('id');
+            const username = localStorage.getItem('username');
             alert('Entered');
             // Create connection API
             // console.log('Create Invitation clicked with a value:', holderName);
             let data = {
-                userPort: 9002,
-                url: holderName
-                }
-            Axios.post("http://localhost:3001/connections/receive", 
+                id: displayId,
+                url: holderName,
+                verifierName: verifierName,
+                username: username
+            }
+            Axios.post("http://localhost:3001/connections/receive",
                 // userPort: displayId + 9000
                 data
 
@@ -233,7 +236,12 @@ function Holder() {
                                         <Form.Group className="mb-3" controlId="formBasicEmail">
                                             <Form.Label className='textColor'>Verifier name: </Form.Label>
                                             {enableText && (
-                                                <Form.Control type="text" />
+                                                <Form.Control
+                                                    type="text"
+                                                    onChange={(e) => {
+                                                        setVerfierName(e.target.value);
+                                                    }}
+                                                />
                                             )}
                                         </Form.Group>
 
