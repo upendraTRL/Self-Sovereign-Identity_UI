@@ -62,6 +62,7 @@ app.post("/register", (req, res) => {
     //Default entry
     const schema_id = "0";
     const cred_def_id = "0";
+    const credentials = "0";
 
     bcrypt.hash(password, saltRounds, (err, hash) => {
         if (err) {
@@ -69,8 +70,8 @@ app.post("/register", (req, res) => {
         }
 
         db.query(
-            "INSERT INTO users (username, password, usertype, displayname, schema_id, cred_def_id) VALUES (?,?,?,?,?,?)",
-            [username, hash, usertype, displayname, schema_id, cred_def_id],
+            "INSERT INTO users (username, password, usertype, displayname, schema_id, cred_def_id, credentials) VALUES (?,?,?,?,?,?,?)",
+            [username, hash, usertype, displayname, schema_id, cred_def_id, credentials],
             (err, result) => {
                 console.log(result);
                 if (typeof err === "object") {
@@ -386,19 +387,37 @@ app.post("/issue-credential/send", (req, res) => {
 ///// get credential by connection id
 app.get("/issue-credential/get-credentials", (req, res) => {
 
-    let port = req.body.userPort
-    let data = port + 9000
+    const userPort = req.query.userPort
+    const username = req.query.username
+    console.log("Get Creds API ", userPort);
 
-    console.log("Inside issue credential send")
-    axios.get(`http://${process.env.NEST_IP}:${process.env.NEST_PORT}/issue-credential/records`), {
-        data
-    }
-        .then(response => {
-            console.log(response.data);
-        })
-        .catch(error => {
-            console.error(error);
-        });
+
+    //Task - Create object tobe update in below query and store in
+    //string form
+
+    // console.log("Inside issue credential send")
+    // axios.get(`http://${process.env.NEST_IP}:${process.env.NEST_PORT}/issue-credential/records`), {
+    //     userPort
+    // }
+    //     .then(response => {
+    //         console.log(response.data);
+    //         //Update credentials in user table with the response
+    //         db.query(
+    //             "UPDATE users SET credentials = ? WHERE username = ?",
+    //             [username],
+    //             (err, result) => {
+    //                 console.log(result);
+    //                 if (typeof err === "object") {
+    //                     console.log('Successful Updated!');
+    //                     res.status(200).send("Success");
+    //                 }
+    //                 console.log(err);
+    //             }
+    //         );
+    //     })
+    //     .catch(error => {
+    //         console.error(error);
+    //     });
 })
 
 
