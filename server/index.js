@@ -130,6 +130,7 @@ app.post("/login", (req, res) => {
                     console.log(password, result[0].password, response);
                     if (response) {
                         console.log("Name = ", username);
+                        console.log("All data = ", result);
 
                         req.session.user = result; // Store user data in the session
                         console.log("Logged in - ", req.session.user);
@@ -271,11 +272,11 @@ app.post("/connections/create", (req, res) => {
 app.post("/connections/receive", (req, res) => {
 
     console.log("userPort from holder: ", req.body);
-    
-    console.log("url from holder: ", );
+
+    console.log("url from holder: ",);
 
     console.log("Inside receive connections")
-    axios.post(`http://${process.env.NEST_IP}:${process.env.NEST_PORT}/connections/receive-invitation`,req.body)
+    axios.post(`http://${process.env.NEST_IP}:${process.env.NEST_PORT}/connections/receive-invitation`, req.body)
         .then(response => {
             console.log(response.data);
 
@@ -289,22 +290,67 @@ app.post("/connections/receive", (req, res) => {
 //send issue credential
 app.post("/issue-credential/send", (req, res) => {
 
-    console.log("Inside issue credential send")
-    axios.post(`http://${process.env.NEST_IP}:${process.env.NEST_PORT}/issue-credential/send-credential`)
-        .then(response => {
-            console.log(response.data);
-        })
-        .catch(error => {
-            console.error(error);
-        });
+    let data = {}
+
+    let port = req.body.userPort
+    let port1 = port + 9000
+    let connection_name = req.body.connection_name
+    let cred_def_id = req.body.cred_def_id
+    let name = req.body.name
+    let dob = req.body.dob
+    let gender = req.body.gender
+    let address = req.body.address
+    let connection_id = 'a'
+    console.log("Data fetched - ", port1, connection_name, cred_def_id, name, dob, gender, address);
+
+    //Fetching connection_id from connection's table
+    const query = `SELECT connection_id FROM connection WHERE id = ? AND connection_name = ?`;
+
+    db.query(query, [port, connection_name], (err, result) => {
+        if (err) {
+            return res.json(err);
+        }
+
+        connection_id = result[0].connection_id
+        console.log("Connection ID for  = ", connection_id);
+        // return res.json(result);
+
+        data = {
+            userPort: port1,
+            connection_id: connection_id,
+            cred_def_id: cred_def_id,
+            name: name,
+            dob: dob,
+            gender: gender,
+            address: address
+        }
+
+        console.log("Inside issue credential send", data)
+
+        // axios.post(`http://${process.env.NEST_IP}:${process.env.NEST_PORT}/issue-credential/send-credential`),
+        //     data
+        //         .then(response => {
+        //             console.log(response.data);
+        //         })
+        //         .catch(error => {
+        //             console.error(error);
+        //         });
+    });
+
+
 })
 
 
 ///// get credential by connection id
 app.get("/issue-credential/get-credentials", (req, res) => {
 
+    let port = req.body.userPort
+    let data = port + 9000
+
     console.log("Inside issue credential send")
-    axios.get(`http://${process.env.NEST_IP}:${process.env.NEST_PORT}/issue-credential/records`)
+    axios.get(`http://${process.env.NEST_IP}:${process.env.NEST_PORT}/issue-credential/records`), {
+        data
+    }
         .then(response => {
             console.log(response.data);
         })
@@ -313,6 +359,50 @@ app.get("/issue-credential/get-credentials", (req, res) => {
         });
 })
 
+
+app.post("/present-proof/send-proposal", (req, res) => {
+    let port = req.body.userPort
+    let port1 = port + 9000
+
+    let data = {
+        userPort: port1,
+        connection_id: string,
+        cred_def_id: string,
+        name: string,
+        dob: string,
+        gender: string,
+        address: string
+    }
+
+    console.log("Inside issue credential send")
+    axios.post(`http://${process.env.NEST_IP}:${process.env.NEST_PORT}/present-proof/send-proposal`),
+        data
+
+            .then(response => {
+                console.log(response.data);
+            })
+            .catch(error => {
+                console.error(error);
+            });
+})
+
+
+app.get("/present-proof/records", (req, res) => {
+
+    let port = req.body.userPort
+    let data = port + 9000
+
+    console.log("Inside issue credential send")
+    axios.get(`http://${process.env.NEST_IP}:${process.env.NEST_PORT}/present-proof/records`), {
+        data
+    }
+        .then(response => {
+            console.log(response.data);
+        })
+        .catch(error => {
+            console.error(error);
+        });
+})
 
 
 app.listen(process.env.SERVER, () => {

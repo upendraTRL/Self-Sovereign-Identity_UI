@@ -88,7 +88,12 @@ function Issuer() {
             }
         })
             .then(response => {
-                console.log(response.data[0].schema_id);
+
+                localStorage.setItem('id', response.data[0].id);
+                localStorage.setItem('cred_def_id', response.data[0].cred_def_id);
+                localStorage.setItem('schema_id', response.data[0].schema_id);
+
+                // console.log(response.data[0].schema_id);
                 setSchemaId(response.data[0].schema_id);
                 setDisplayId(response.data[0].id);
             })
@@ -97,7 +102,7 @@ function Issuer() {
             });
     }, []);
 
-    localStorage.setItem('id', displayId);
+    // localStorage.setItem('id', displayId);
     var schemaCheck = schemaId;
 
 
@@ -168,6 +173,43 @@ function Issuer() {
 
         }
     };
+
+    //Issue credential send API call
+    const [attName, setAttName] = useState('');
+    const [dob, setDob] = useState('');
+    const [gender, setGender] = useState('');
+    const [address, setAddress] = useState('');
+    const handleIssueCred = () => {
+
+        if (attName.trim() === "" || dob.trim() === "" || gender.trim() === "" || address.trim() === "" || selectedOption === "") {
+            alert('Enter Attributes');
+        } else {
+            const cred_def_id = localStorage.getItem('cred_def_id');
+
+            // Create connection API
+
+            Axios.post("http://localhost:3001/issue-credential/send", {
+                userPort: displayId,
+                connection_name: selectedOption,
+                cred_def_id: cred_def_id,
+                name: attName,
+                gender: gender,
+                dob: dob,
+                address: address
+            }).then(response => {
+                console.log("Credentials Response = ", response.data);
+
+                if (response.status == 200 || response.status == 201) {
+                    if (window.confirm("Credentials Issued Successfully!")) {
+
+                    }
+                }
+            });
+
+
+        }
+    };
+
 
     return (
 
@@ -348,7 +390,11 @@ function Issuer() {
                                 <Row className='rightBlock1'>
 
                                     <Col>
-                                        <HolderButton value="Send Credentials" />
+                                        <Button
+                                            style={{ background: "#087494", color: "#FFFFFF", border: "none" }}
+                                            onClick={handleIssueCred} >
+                                            Send Credentials
+                                        </Button>
                                     </Col>
                                     <Col>
                                         <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -361,7 +407,11 @@ function Issuer() {
                                                 // style={dropdownButtonStyle}
                                                 >
                                                     {connectionName.map((item, index) => (
-                                                        <Dropdown.Item key={index} eventKey={item.connection_name}>{item.connection_name}</Dropdown.Item>
+                                                        <Dropdown.Item
+                                                            key={index} eventKey={item.connection_name}
+                                                        >
+                                                            {item.connection_name}
+                                                        </Dropdown.Item>
                                                     ))}
                                                 </DropdownButton>
                                                 {/* <Form.Control type="text" disabled={!selectedOption} style={{ backgroundColor: 'white' }} /> */}
@@ -373,7 +423,7 @@ function Issuer() {
                                 </Row>
                             </Row>
 
-                            {/* Row3 */}
+                            {/* Attributes */}
                             <Row>
                                 <Row className='rightBlock2'>
                                     <Row className='title1'><h4>Attributes</h4></Row>
@@ -381,12 +431,26 @@ function Issuer() {
                                         <Form>
                                             <Form.Group className="mb-3" controlId="formBasicEmail">
                                                 <Form.Label className='textColor'>Name: </Form.Label>
-                                                <Form.Control type="text" placeholder="Enter Name" />
+                                                <Form.Control
+                                                    type="text"
+                                                    placeholder="Enter Name"
+                                                    value={attName}
+                                                    onChange={(e) => {
+                                                        setAttName(e.target.value);
+                                                    }}
+                                                />
                                             </Form.Group>
 
                                             <Form.Group className="mb-3" controlId="formBasicEmail">
-                                                <Form.Label className='textColor'>Age: </Form.Label>
-                                                <Form.Control type="number" placeholder="Enter Age" />
+                                                <Form.Label className='textColor'>Date Of Birth: </Form.Label>
+                                                <Form.Control
+                                                    type="text"
+                                                    placeholder="Enter Date Of Birth"
+                                                    value={dob}
+                                                    onChange={(e) => {
+                                                        setDob(e.target.value);
+                                                    }}
+                                                />
                                             </Form.Group>
                                         </Form>
                                     </Col>
@@ -396,12 +460,26 @@ function Issuer() {
                                         <Form>
                                             <Form.Group className="mb-3" controlId="formBasicEmail">
                                                 <Form.Label className='textColor'>Gender: </Form.Label>
-                                                <Form.Control type="text" placeholder="Enter Gender" />
+                                                <Form.Control
+                                                    type="text"
+                                                    placeholder="Enter Gender"
+                                                    value={gender}
+                                                    onChange={(e) => {
+                                                        setGender(e.target.value);
+                                                    }}
+                                                />
                                             </Form.Group>
 
                                             <Form.Group className="mb-3" controlId="formBasicEmail">
                                                 <Form.Label className='textColor'>Address: </Form.Label>
-                                                <Form.Control type="text" placeholder="Enter Address" />
+                                                <Form.Control
+                                                    type="text"
+                                                    placeholder="Enter Address"
+                                                    value={address}
+                                                    onChange={(e) => {
+                                                        setAddress(e.target.value);
+                                                    }}
+                                                />
                                             </Form.Group>
                                         </Form>
                                     </Col>
