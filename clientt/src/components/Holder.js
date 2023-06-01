@@ -94,16 +94,22 @@ function Holder() {
         setSelectedOption(option);
     };
 
+
+    const [selectedOptionCred, setSelectedOptionCred] = useState('');
+    const handleDropdownSelectCred = (option) => {
+        setSelectedOptionCred(option);
+    };
+
     //To holder fetch data from connection table
     const [connectionName, setConnectionName] = useState([]);
     useEffect(() => {
 
-        const username = localStorage.getItem('usernameHolder');
+        const usernameH = localStorage.getItem('usernameHolder');
 
         // Make API call to fetch user schema_id
         Axios.get('http://localhost:3001/toholder', {
             params: {
-                username: username
+                usernameH: usernameH
             }
         })
             .then(response => {
@@ -371,16 +377,46 @@ function Holder() {
                                         <Form.Group className="mb-3" controlId="formBasicEmail">
                                             <Form.Label className='textColor'>Credential: </Form.Label>
                                             <Form>
+
                                                 <DropdownButton
                                                     id="dropdown-button"
-                                                    title={selectedOption || 'Select an option'}
-                                                    onSelect={handleDropdownSelect}
+                                                    title={selectedOptionCred || 'Select an option'}
+                                                    onSelect={setSelectedOptionCred}
                                                     style={{ color: 'white' }}
                                                 >
-                                                    <Dropdown.Item eventKey="option1">Option 1</Dropdown.Item>
-                                                    <Dropdown.Item eventKey="option2">Option 2</Dropdown.Item>
-                                                    <Dropdown.Item eventKey="option3">Option 3</Dropdown.Item>
+
+                                                    {listOfUsers.map((user, index) => {
+                                                        const originalString = user.schema_id;
+                                                        let colonIndex = -1;
+                                                        let extractedValue = "";
+
+                                                        for (let i = 0; i < 2; i++) {
+                                                            colonIndex = originalString.indexOf(":", colonIndex + 1);
+                                                            if (colonIndex === -1) {
+                                                                break;
+                                                            }
+                                                        }
+
+                                                        if (colonIndex !== -1) {
+                                                            extractedValue = originalString.substring(colonIndex + 1).trim();
+                                                        }
+
+                                                        console.log(extractedValue); // Output: " Final Value"
+                                                        return (
+
+
+
+                                                            <Dropdown.Item
+                                                                key={index} eventKey={extractedValue}
+                                                            >
+                                                                {extractedValue}
+                                                            </Dropdown.Item>
+
+                                                        );
+                                                    })}
                                                 </DropdownButton>
+
+
 
                                             </Form>
                                         </Form.Group>
