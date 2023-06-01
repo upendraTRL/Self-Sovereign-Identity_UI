@@ -20,6 +20,29 @@ function HolderButton({ value }) {
 }
 
 function Verifier() {
+    //Fetch ALL DATA, and setting to local storage
+    useEffect(() => {
+        // Fetch username from localStorage
+        const username = localStorage.getItem('username');
+
+        // Make API call to fetch user schema_id
+        Axios.get('http://localhost:3001/users', {
+            params: {
+                username: username
+            }
+        })
+            .then(response => {
+                console.log(response.data[0].schema_id);
+                // setSchemaId(response.data[0].schema_id);
+                setDisplayId(response.data[0].id);
+                localStorage.setItem("idVerifier", response.data[0].id);
+                localStorage.setItem("displaynameVerifier", response.data[0].displayname);
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    }, []);
+
 
     //sending username and fetching schema_id, try 2
     // const [schemaId, setSchemaId] = useState('');

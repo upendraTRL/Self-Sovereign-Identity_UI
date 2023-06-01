@@ -40,6 +40,34 @@ function HolderButton({ value }) {
 
 function Issuer() {
 
+    //Fetch ALL DATA
+    useEffect(() => {
+        // Fetch username from localStorage
+        const username = localStorage.getItem('usernameIssuer');
+
+        // Make API call to fetch user schema_id
+        Axios.get('http://localhost:3001/users', {
+            params: {
+                username: username
+            }
+        })
+            .then(response => {
+
+                localStorage.setItem('idIssuer', response.data[0].id);
+                localStorage.setItem('usernameIssuer', response.data[0].username);
+                localStorage.setItem('cred_def_id', response.data[0].cred_def_id);
+                localStorage.setItem('schema_id', response.data[0].schema_id);
+
+                // console.log(response.data[0].schema_id);
+                setSchemaId(response.data[0].schema_id);
+                setDisplayId(response.data[0].id);
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    }, []);
+
+
     //New card data fill API call
     const [credDef, setCredDef] = useState("");
     const [schemaID, setSchemaID] = useState("");
@@ -47,7 +75,7 @@ function Issuer() {
 
     //Store username to local storage and display to Nav Bar
     useEffect(() => {
-        const storedUsername = localStorage.getItem('username');
+        const storedUsername = localStorage.getItem('usernameIssuer');
         if (storedUsername) {
             setUsername(storedUsername);
         }
@@ -77,30 +105,7 @@ function Issuer() {
     const [schemaId, setSchemaId] = useState('');
     const [displayId, setDisplayId] = useState();
 
-    useEffect(() => {
-        // Fetch username from localStorage
-        const username = localStorage.getItem('username');
 
-        // Make API call to fetch user schema_id
-        Axios.get('http://localhost:3001/users', {
-            params: {
-                username: username
-            }
-        })
-            .then(response => {
-
-                localStorage.setItem('id', response.data[0].id);
-                localStorage.setItem('cred_def_id', response.data[0].cred_def_id);
-                localStorage.setItem('schema_id', response.data[0].schema_id);
-
-                // console.log(response.data[0].schema_id);
-                setSchemaId(response.data[0].schema_id);
-                setDisplayId(response.data[0].id);
-            })
-            .catch(error => {
-                console.log(error);
-            });
-    }, []);
 
     // localStorage.setItem('id', displayId);
     var schemaCheck = schemaId;
@@ -116,7 +121,7 @@ function Issuer() {
     const [connectionName, setConnectionName] = useState([]);
     useEffect(() => {
 
-        const username = localStorage.getItem('username');
+        const username = localStorage.getItem('usernameIssuer');
 
         // Make API call to fetch user schema_id
         Axios.get('http://localhost:3001/toholder', {

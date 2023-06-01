@@ -391,34 +391,22 @@ app.get("/issue-credential/get-credentials", (req, res) => {
     const username = req.query.username
     console.log("Get Creds API ", userPort);
 
-
-    //Task - Create object tobe update in below query and store in
-    //string form
-
     // console.log("Inside issue credential send")
-    // axios.get(`http://${process.env.NEST_IP}:${process.env.NEST_PORT}/issue-credential/records`), {
-    //     userPort
-    // }
-    //     .then(response => {
-    //         console.log(response.data);
-    //         //Update credentials in user table with the response
-    //         db.query(
-    //             "UPDATE users SET credentials = ? WHERE username = ?",
-    //             [username],
-    //             (err, result) => {
-    //                 console.log(result);
-    //                 if (typeof err === "object") {
-    //                     console.log('Successful Updated!');
-    //                     res.status(200).send("Success");
-    //                 }
-    //                 console.log(err);
-    //             }
-    //         );
-    //     })
-    //     .catch(error => {
-    //         console.error(error);
-    //     });
+    axios.post(`http://${process.env.NEST_IP}:${process.env.NEST_PORT}/issue-credential/get-cred-records`,
+        {
+            userPort
+        })
+
+        .then(response => {
+            console.log("Get Creds Responsssssssssssss -", (response.data.results));
+            res.send(response.data.results);
+        })
+        .catch(error => {
+            console.error(error);
+        });
 })
+
+
 
 
 app.post("/present-proof/send-proposal", (req, res) => {

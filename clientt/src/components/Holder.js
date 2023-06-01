@@ -45,25 +45,28 @@ function HolderButton({ value }) {
 
 
 function Holder() {
-    //Calling get creds API
+    //Fetch ALL DATA, and setting to local storage
     useEffect(() => {
-
-        let id = parseInt(localStorage.getItem('id'), 10);
-        const userPort = id + 9000
+        // Fetch username from localStorage
         const username = localStorage.getItem('username');
-        console.log("IDDDDDDDDDD - ", userPort);
 
         // Make API call to fetch user schema_id
-        Axios.get('http://localhost:3001/issue-credential/get-credentials', {
+        Axios.get('http://localhost:3001/users', {
             params: {
-                userPort: userPort,
                 username: username
             }
-        }).then(response => {
-            console.log(response.data);
-        }).catch(error => {
-            console.log(error);
-        });
+        })
+            .then(response => {
+                console.log(response.data[0].schema_id);
+                // setSchemaId(response.data[0].schema_id);
+                setDisplayId(response.data[0].id);
+                localStorage.setItem("idHolder", response.data[0].id);
+                localStorage.setItem("usernameHolder", response.data[0].username);
+                localStorage.setItem("displaynameHolder", response.data[0].displayname);
+            })
+            .catch(error => {
+                console.log(error);
+            });
     }, []);
 
 
@@ -95,7 +98,7 @@ function Holder() {
     const [connectionName, setConnectionName] = useState([]);
     useEffect(() => {
 
-        const username = localStorage.getItem('username');
+        const username = localStorage.getItem('usernameHolder');
 
         // Make API call to fetch user schema_id
         Axios.get('http://localhost:3001/toholder', {
@@ -122,31 +125,12 @@ function Holder() {
 
     //Store username to local storage and display to Nav Bar
     useEffect(() => {
-        const storedUsername = localStorage.getItem('username');
+        const storedUsername = localStorage.getItem('usernameHolder');
         if (storedUsername) {
             setUsername(storedUsername);
         }
     }, []);
 
-    useEffect(() => {
-        // Fetch username from localStorage
-        const username = localStorage.getItem('username');
-
-        // Make API call to fetch user schema_id
-        Axios.get('http://localhost:3001/users', {
-            params: {
-                username: username
-            }
-        })
-            .then(response => {
-                console.log(response.data[0].schema_id);
-                // setSchemaId(response.data[0].schema_id);
-                setDisplayId(response.data[0].id);
-            })
-            .catch(error => {
-                console.log(error);
-            });
-    }, []);
 
 
     //holder name field check
@@ -159,7 +143,7 @@ function Holder() {
         if (holderName.trim() === "") {
             alert('Enter Invitation Message');
         } else {
-            const username = localStorage.getItem('username');
+            const username = localStorage.getItem('usernameHolder');
             alert('Entered');
             // Create connection API
             // console.log('Create Invitation clicked with a value:', holderName);
@@ -185,7 +169,39 @@ function Holder() {
         }
     };
 
-    //Main
+
+    //Credentials list 
+    // const arrayTest = [
+    //     { id: 0, name: 'Krishna', age: 24 },
+    //     { id: 1, name: 'Messi', age: 25 },
+    //     { id: 2, name: 'Steve', age: 42 }
+    // ]
+
+
+    const sampleUsers = [{ attrs: { name: "", gender: "", dob: "", address: "" }, schema_id: "" }]
+    var [listOfUsers, setListOfUsers] = useState(sampleUsers);
+
+    const handleGetCredentials = () => {
+        let id = parseInt(localStorage.getItem('idHolder'), 10);
+        const userPort = id + 9000
+        const username = localStorage.getItem('usernameHolder');
+        console.log("IDDDDDDDDDD - ", userPort);
+
+        // Make API call to fetch user schema_id
+        Axios.get('http://localhost:3001/issue-credential/get-credentials', {
+            params: {
+                userPort: userPort,
+                username: username
+            }
+        }).then(response => {
+            setListOfUsers(response.data);
+            console.log(listOfUsers);
+        }).catch(error => {
+            console.log(error);
+        });
+    };
+
+
     return (
 
         <div className="Holderr">
@@ -298,7 +314,7 @@ function Holder() {
                                         {/* <Button variant='info'>Refresh</Button> */}
                                         <Button
                                             style={{ background: "#087494", color: "#FFFFFF", border: "none" }}
-                                            onClick={handleCreateInvitation} >
+                                            onClick={handleGetCredentials} >
                                             Accept Invitation
                                         </Button>
                                     </Col>
@@ -391,7 +407,11 @@ function Holder() {
                                     <h2>Credentials</h2>
                                 </Col>
                                 <Col>
-                                    <HolderButton value="Refresh" />
+                                    <Button
+                                        style={{ background: "#087494", color: "#FFFFFF", border: "none" }}
+                                        onClick={handleGetCredentials} >
+                                        Refresh
+                                    </Button>
                                 </Col>
                             </Row>
 
@@ -399,90 +419,76 @@ function Holder() {
                             <Row>
                                 <Row className='rightBlock1'>
 
-                                    <Row className='title1'><h4>Aadhar</h4></Row>
-
-                                    {/* 0th Index User */}
-                                    <Row>
-                                        {/* Name & Age */}
-                                        <Col>
-                                            <Form>
-                                                <Form.Group className="mb-3" controlId="formBasicEmail">
-                                                    <Form.Label className='textColor'>Name: </Form.Label>
-                                                    <Form.Control type="text" value={firstUser.name} disabled />
-                                                </Form.Group>
-
-                                                <Form.Group className="mb-3" controlId="formBasicEmail">
-                                                    <Form.Label className='textColor'>Age: </Form.Label>
-                                                    <Form.Control type="number" value={firstUser.age} disabled />
-                                                </Form.Group>
-                                            </Form>
-                                        </Col>
-
-                                        {/* Gender & address */}
-                                        <Col>
-                                            {/* //Collapse use1 */}
-
-                                            <Form>
-                                                <Form.Group className="mb-3" controlId="formBasicEmail">
-                                                    <Form.Label className='textColor'>Gender: </Form.Label>
-                                                    <Form.Control type="text" value="Male" disabled />
-                                                </Form.Group>
-
-                                                <Form.Group className="mb-3" controlId="formBasicEmail">
-                                                    <Form.Label className='textColor'>Address: </Form.Label>
-                                                    <Form.Control type="text" value="Pune" disabled />
-                                                </Form.Group>
-                                            </Form>
-                                        </Col>
-
-                                    </Row>
-
 
                                     {/* Clp star */}
 
+
+                                    <div className='usersDisplay'>
+
+                                        {listOfUsers.map((user) => {
+                                            const originalString = user.schema_id;
+                                            let colonIndex = -1;
+                                            let extractedValue = "";
+
+                                            for (let i = 0; i < 2; i++) {
+                                                colonIndex = originalString.indexOf(":", colonIndex + 1);
+                                                if (colonIndex === -1) {
+                                                    break;
+                                                }
+                                            }
+
+                                            if (colonIndex !== -1) {
+                                                extractedValue = originalString.substring(colonIndex + 1).trim();
+                                            }
+
+                                            console.log(extractedValue); // Output: " Final Value"
+                                            return (
+
+                                                // User list
+                                                <Row>
+                                                    <Row className='title1'><h4>{extractedValue}</h4></Row>
+
+                                                    <Col>
+                                                        <Form>
+                                                            <Form.Group className="mb-3" controlId="formBasicEmail">
+                                                                <Form.Label className='textColor'>Name: </Form.Label>
+                                                                <Form.Control type="text" value={user.attrs.name} disabled />
+                                                            </Form.Group>
+
+                                                            <Form.Group className="mb-3" controlId="formBasicEmail">
+                                                                <Form.Label className='textColor'>Date Of Birth: </Form.Label>
+                                                                <Form.Control type="text" value={user.attrs.dob} disabled />
+                                                            </Form.Group>
+                                                        </Form>
+                                                    </Col>
+
+
+                                                    <Col>
+
+
+                                                        <Form>
+                                                            <Form.Group className="mb-3" controlId="formBasicEmail">
+                                                                <Form.Label className='textColor'>Gender: </Form.Label>
+                                                                <Form.Control type="text" value={user.attrs.gender} disabled />
+                                                            </Form.Group>
+
+                                                            <Form.Group className="mb-3" controlId="formBasicEmail">
+                                                                <Form.Label className='textColor'>Address: </Form.Label>
+                                                                <Form.Control type="text" value={user.attrs.address} disabled />
+                                                            </Form.Group>
+                                                        </Form>
+                                                    </Col>
+                                                    <hr style={{ background: "black", height: "3px" }} />
+                                                </Row>
+                                            );
+                                        })}
+                                    </div>
 
 
                                     {/* Clp end */}
 
                                 </Row>
                             </Row>
-
-                            {/* Row3 */}
-                            <Row>
-                                <Row className='rightBlock2'>
-                                    <Row className='title1'><h4>Pan</h4></Row>
-                                    <Col>
-                                        <Form>
-                                            <Form.Group className="mb-3" controlId="formBasicEmail">
-                                                <Form.Label className='textColor'>Name: </Form.Label>
-                                                <Form.Control type="text" placeholder="Enter Name" />
-                                            </Form.Group>
-
-                                            <Form.Group className="mb-3" controlId="formBasicEmail">
-                                                <Form.Label className='textColor'>Age: </Form.Label>
-                                                <Form.Control type="number" placeholder="Enter Age" />
-                                            </Form.Group>
-                                        </Form>
-                                    </Col>
-
-
-                                    <Col>
-                                        <Form>
-                                            <Form.Group className="mb-3" controlId="formBasicEmail">
-                                                <Form.Label className='textColor'>Gender: </Form.Label>
-                                                <Form.Control type="text" placeholder="Enter Gender" />
-                                            </Form.Group>
-
-                                            <Form.Group className="mb-3" controlId="formBasicEmail">
-                                                <Form.Label className='textColor'>Address: </Form.Label>
-                                                <Form.Control type="text" placeholder="Enter Address" />
-                                            </Form.Group>
-                                        </Form>
-                                    </Col>
-
-                                </Row>
-                            </Row>
-
                         </Col>
 
                     </Row>
