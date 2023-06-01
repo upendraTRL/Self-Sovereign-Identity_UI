@@ -314,19 +314,24 @@ app.post("/connections/receive", (req, res) => {
             //Store data in connection table
             const connection_id = response.data.connection_id;
 
-            db.query(
-                "INSERT INTO connection (connection_id, connection_name, id, username) VALUES (?,?,?,?)",
-                [connection_id, connection_name, id, username],
-                (err, result) => {
-                    console.log("Am I null?", result);
-                    // if (typeof err === "object") {
-                    //     console.log('Connection Added!');
-                    //     res.status(200).send(response.data);
-                    // }
-                    //console.log(err);
-                }
-            );
 
+            if (connection_name == "") {
+                console.log("Verifier Nameee - ", connection_name);
+            } else {
+                db.query(
+                    "INSERT INTO connection (connection_id, connection_name, id, username) VALUES (?,?,?,?)",
+                    [connection_id, connection_name, id, username],
+                    (err, result) => {
+                        console.log("Am I null?", result);
+                        // if (typeof err === "object") {
+                        //     console.log('Connection Added!');
+                        //     res.status(200).send(response.data);
+                        // }
+                        //console.log(err);
+                    }
+                );
+
+            }
 
         })
         .catch(error => {
@@ -366,7 +371,7 @@ app.post("/issue-credential/send", (req, res) => {
 
         data = {
             userPort: userPort,
-            connection_id: connection_id,
+            connection_id: connection_id[0].connection_id,
             cred_def_id: cred_def_id,
             name: name,
             dob: dob,
