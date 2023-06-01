@@ -157,7 +157,7 @@ function Issuer() {
             // console.log('Create Invitation clicked with a value:', holderName);
             Axios.post("http://localhost:3001/connections/create", {
                 // userPort: displayId + 9000,
-                id:id,
+                id: id,
                 connection_name: holderName,
                 userPort: userPort,
                 username: username
@@ -200,6 +200,7 @@ function Issuer() {
             const userPort = id + 9000
 
             Axios.post("http://localhost:3001/issue-credential/send", {
+                id: id,
                 userPort: userPort,
                 connection_name: selectedOption,
                 cred_def_id: cred_def_id,

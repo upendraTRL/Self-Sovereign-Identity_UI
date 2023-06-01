@@ -340,6 +340,7 @@ app.post("/issue-credential/send", (req, res) => {
 
     let data = {}
 
+    let id = req.body.id
     let userPort = req.body.userPort
     let connection_name = req.body.connection_name
     let cred_def_id = req.body.cred_def_id
@@ -353,7 +354,7 @@ app.post("/issue-credential/send", (req, res) => {
     //Fetching connection_id from connection's table
     const query = `SELECT connection_id FROM connection WHERE id = ? AND connection_name = ?`;
 
-    db.query(query, [userPort, connection_name], (err, result) => {
+    db.query(query, [id, connection_name], (err, result) => {
         if (err) {
             return res.json(err);
         }
@@ -375,14 +376,14 @@ app.post("/issue-credential/send", (req, res) => {
 
         console.log("Inside issue credential send", data)
 
-        // axios.post(`http://${process.env.NEST_IP}:${process.env.NEST_PORT}/issue-credential/send-credential`),
-        //     data
-        //         .then(response => {
-        //             console.log(response.data);
-        //         })
-        //         .catch(error => {
-        //             console.error(error);
-        //         });
+        axios.post(`http://${process.env.NEST_IP}:${process.env.NEST_PORT}/issue-credential/send-credential`, data)
+
+            .then(response => {
+                console.log(response.data);
+            })
+            .catch(error => {
+                console.error(error);
+            });
     });
 
 
