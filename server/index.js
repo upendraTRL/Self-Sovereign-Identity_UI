@@ -228,10 +228,9 @@ app.post("/connections/create", (req, res) => {
     console.log("req ttyype ::::", typeof (req));
     console.log("req ::::", req.body.userPort);
     console.log("Hname ::::", req.body.connection_name);
-    console.log("Hname ::::", req.body.id);
+    // console.log("Hname ::::", req.body.id);
     console.log("Hname ::::", req.body.username);
-    let port = req.body.userPort
-    let data = port + 9000
+    const data = req.body.userPort
     axios.post(`http://${process.env.NEST_IP}:${process.env.NEST_PORT}/connections/create-invitation`, {
         data
     })

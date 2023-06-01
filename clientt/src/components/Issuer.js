@@ -43,7 +43,8 @@ function Issuer() {
     //Fetch ALL DATA
     useEffect(() => {
         // Fetch username from localStorage
-        const username = localStorage.getItem('usernameIssuer');
+        const username = localStorage.getItem('username');
+        console.log("Hello - ", username);
 
         // Make API call to fetch user schema_id
         Axios.get('http://localhost:3001/users', {
@@ -150,13 +151,15 @@ function Issuer() {
         if (holderName.trim() === "") {
             alert('Enter Holder Name');
         } else {
+            let id = parseInt(localStorage.getItem('idIssuer'), 10);
+            const userPort = id + 9000
             // Create connection API
             // console.log('Create Invitation clicked with a value:', holderName);
             Axios.post("http://localhost:3001/connections/create", {
                 // userPort: displayId + 9000,
-                userPort: displayId,
+
                 connection_name: holderName,
-                id: displayId,
+                userPort: userPort,
                 username: username
             }).then(response => {
                 console.log("Create Connection = ", response.data);
@@ -166,6 +169,7 @@ function Issuer() {
                 console.log("Invi URl final = ", stringInviUrl2);
                 localStorage.setItem('userPort', displayId + 9000);
                 localStorage.setItem('inviUrl', stringInviUrl2);
+                localStorage.setItem('connectionIssuer', response.data.connection_id);
 
                 if (response.status == 200 || response.status == 201) {
                     if (window.confirm("Connection created!")) {
@@ -192,9 +196,11 @@ function Issuer() {
             const cred_def_id = localStorage.getItem('cred_def_id');
 
             // Create connection API
+            let id = parseInt(localStorage.getItem('idIssuer'), 10);
+            const userPort = id + 9000
 
             Axios.post("http://localhost:3001/issue-credential/send", {
-                userPort: displayId,
+                userPort: userPort,
                 connection_name: selectedOption,
                 cred_def_id: cred_def_id,
                 name: attName,
