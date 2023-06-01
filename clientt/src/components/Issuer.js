@@ -157,7 +157,7 @@ function Issuer() {
             // console.log('Create Invitation clicked with a value:', holderName);
             Axios.post("http://localhost:3001/connections/create", {
                 // userPort: displayId + 9000,
-
+                id:id,
                 connection_name: holderName,
                 userPort: userPort,
                 username: username

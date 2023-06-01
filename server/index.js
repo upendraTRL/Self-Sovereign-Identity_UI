@@ -236,6 +236,7 @@ app.post("/connections/create", (req, res) => {
     })
         .then(response => {
             console.log("response from node ::::", response.data);
+            console.log("End of respose --------------");
 
             //Store data in connection table
             const id = req.body.id;
@@ -243,7 +244,7 @@ app.post("/connections/create", (req, res) => {
             const username = req.body.username;
             const connection_id = response.data.connection_id;
 
-            console.log(id, username, connection_id, connection_name);
+            console.log("This is log", id, username, connection_id, connection_name);
 
             db.query(
                 "INSERT INTO connection (connection_id, connection_name, id, username) VALUES (?,?,?,?)",
@@ -274,27 +275,33 @@ app.post("/connections/receive", (req, res) => {
     console.log("userPort from holder: ", req.body);
 
     let data = {
-        userPort: req.body.id + 9000,
+        userPort: req.body.userPort,
         url: req.body.url
     }
 
-    const connection_id = response.data.connection_id;
+    // const connection_id = response.data.connection_id;
+    // const connection_name = req.body.verifierName;
+    // const id = req.body.id;
+    // const username = req.body.username;
+
+    // db.query(
+    //     "INSERT INTO connection (connection_id, connection_name, id, username) VALUES (?,?,?,?)",
+    //     [connection_id, connection_name, id, username],
+    //     (err, result) => {
+    //         console.log(result);
+    //         if (typeof err === "object") {
+    //             console.log('Connection Added!  ');
+    //             res.status(200).send(response.data);
+    //         }
+    //         console.log(err);
+    //     }
+    // );
+
+
+
     const connection_name = req.body.verifierName;
     const id = req.body.id;
     const username = req.body.username;
-
-    db.query(
-        "INSERT INTO connection (connection_id, connection_name, id, username) VALUES (?,?,?,?)",
-        [connection_id, connection_name, id, username],
-        (err, result) => {
-            console.log(result);
-            if (typeof err === "object") {
-                console.log('Connection Added!');
-                res.status(200).send(response.data);
-            }
-            console.log(err);
-        }
-    );
 
 
 
@@ -302,22 +309,21 @@ app.post("/connections/receive", (req, res) => {
         .then(response => {
             console.log("response from node ::::", response.data);
 
+            console.log("IDIDIDI - ", id);
+
             //Store data in connection table
             const connection_id = response.data.connection_id;
-            const connection_name = req.body.verifierName;
-            const id = req.body.id;
-            const username = req.body.username;
 
             db.query(
                 "INSERT INTO connection (connection_id, connection_name, id, username) VALUES (?,?,?,?)",
                 [connection_id, connection_name, id, username],
                 (err, result) => {
-                    console.log(result);
-                    if (typeof err === "object") {
-                        console.log('Connection Added!');
-                        res.status(200).send(response.data);
-                    }
-                    console.log(err);
+                    console.log("Am I null?", result);
+                    // if (typeof err === "object") {
+                    //     console.log('Connection Added!');
+                    //     res.status(200).send(response.data);
+                    // }
+                    //console.log(err);
                 }
             );
 
@@ -334,8 +340,7 @@ app.post("/issue-credential/send", (req, res) => {
 
     let data = {}
 
-    let port = req.body.userPort
-    let port1 = port + 9000
+    let userPort = req.body.userPort
     let connection_name = req.body.connection_name
     let cred_def_id = req.body.cred_def_id
     let name = req.body.name
@@ -343,22 +348,23 @@ app.post("/issue-credential/send", (req, res) => {
     let gender = req.body.gender
     let address = req.body.address
     let connection_id = 'a'
-    console.log("Data fetched - ", port1, connection_name, cred_def_id, name, dob, gender, address);
+    console.log("Data fetched - ", userPort, connection_name, cred_def_id, name, dob, gender, address);
 
     //Fetching connection_id from connection's table
     const query = `SELECT connection_id FROM connection WHERE id = ? AND connection_name = ?`;
 
-    db.query(query, [port, connection_name], (err, result) => {
+    db.query(query, [userPort, connection_name], (err, result) => {
         if (err) {
             return res.json(err);
         }
 
-        connection_id = result[0].connection_id
+        // connection_id = result[0].connection_id
+        connection_id = result
         console.log("Connection ID for  = ", connection_id);
         // return res.json(result);
 
         data = {
-            userPort: port1,
+            userPort: userPort,
             connection_id: connection_id,
             cred_def_id: cred_def_id,
             name: name,

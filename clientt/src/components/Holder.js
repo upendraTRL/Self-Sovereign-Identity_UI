@@ -143,12 +143,18 @@ function Holder() {
         if (holderName.trim() === "") {
             alert('Enter Invitation Message');
         } else {
+
+            // const id = localStorage.getItem('idHolder')
+
             const username = localStorage.getItem('usernameHolder');
+            let id = parseInt(localStorage.getItem('idHolder'), 10);
+            const userPort = id + 9000
             alert('Entered');
             // Create connection API
             // console.log('Create Invitation clicked with a value:', holderName);
             let data = {
-                id: displayId,
+                id: id,
+                userPort: userPort,
                 url: holderName,
                 verifierName: verifierName,
                 username: username
@@ -314,7 +320,7 @@ function Holder() {
                                         {/* <Button variant='info'>Refresh</Button> */}
                                         <Button
                                             style={{ background: "#087494", color: "#FFFFFF", border: "none" }}
-                                            onClick={handleGetCredentials} >
+                                            onClick={handleCreateInvitation} >
                                             Accept Invitation
                                         </Button>
                                     </Col>
