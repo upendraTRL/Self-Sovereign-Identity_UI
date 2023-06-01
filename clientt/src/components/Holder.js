@@ -63,6 +63,7 @@ function Holder() {
                 localStorage.setItem("idHolder", response.data[0].id);
                 localStorage.setItem("usernameHolder", response.data[0].username);
                 localStorage.setItem("displaynameHolder", response.data[0].displayname);
+                localStorage.setItem("cred", response.data[0].cred_def_id);
             })
             .catch(error => {
                 console.log(error);
@@ -214,6 +215,37 @@ function Holder() {
     };
 
 
+
+
+    const handlePresentProof = () => {
+        let id = parseInt(localStorage.getItem('idHolder'), 10);
+        const userPort = id + 9000
+        const username = localStorage.getItem('usernameHolder');
+        console.log("IDDDDDDDDDD - ", userPort);
+        console.log("I - ", selectedOption);
+        const cred_def_id = localStorage.getItem('cred');
+
+        // Make API call to fetch user schema_id
+        // Axios.get('http://localhost:3001/present-proof/send-proposal', {
+        //     params: {
+        //         id: id,
+        //         userPort: userPort,
+        //         connection_name: selectedOption,
+        //         credDefId: listOfUsers[selectedOption].schema_id,
+        //         // name: attName,
+        //         // gender: gender,
+        //         // dob: dob,
+        //         // address: address
+        //     }
+        // }).then(response => {
+        //     setListOfUsers(response.data);
+        //     console.log(listOfUsers);
+        // }).catch(error => {
+        //     console.log(error);
+        // });
+    };
+
+
     return (
 
         <div className="Holderr">
@@ -361,7 +393,7 @@ function Holder() {
                                                 >
                                                     {connectionName.map((item, index) => (
                                                         <Dropdown.Item
-                                                            key={index} eventKey={item.connection_name}
+                                                            key={index} eventKey={index}
                                                         >
                                                             {item.connection_name}
                                                         </Dropdown.Item>
@@ -430,7 +462,11 @@ function Holder() {
 
                                     </Col>
                                     <Col>
-                                        <HolderButton value="Present Proof" />
+                                        <Button
+                                            style={{ background: "#087494", color: "#FFFFFF", border: "none" }}
+                                            onClick={handlePresentProof} >
+                                            Present Proof
+                                        </Button>
                                     </Col>
                                 </Row>
 

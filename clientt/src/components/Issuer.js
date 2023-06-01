@@ -122,12 +122,12 @@ function Issuer() {
     const [connectionName, setConnectionName] = useState([]);
     useEffect(() => {
 
-        const username = localStorage.getItem('usernameIssuer');
+        const usernameH = localStorage.getItem('usernameIssuer');
 
         // Make API call to fetch user schema_id
         Axios.get('http://localhost:3001/toholder', {
             params: {
-                username: username
+                usernameH: usernameH
             }
         })
             .then(response => {
