@@ -220,29 +220,41 @@ function Holder() {
     const handlePresentProof = () => {
         let id = parseInt(localStorage.getItem('idHolder'), 10);
         const userPort = id + 9000
+
+        const connection_name = selectedOption
+        const name = listOfUsers[selectedOptionCred].attrs.name
+        const dob = listOfUsers[selectedOptionCred].attrs.dob
+        const gender = listOfUsers[selectedOptionCred].attrs.gender
+        const address = listOfUsers[selectedOptionCred].attrs.address
+        const credDefId = listOfUsers[selectedOptionCred].cred_def_id
+
+
         const username = localStorage.getItem('usernameHolder');
-        console.log("IDDDDDDDDDD - ", userPort);
-        console.log("I - ", selectedOption);
+        console.log("Ididid - ", userPort);
+        console.log("I - ", selectedOptionCred);
+
         const cred_def_id = localStorage.getItem('cred');
 
+        let data = {
+            id: id,
+            userPort: userPort,
+            connection_name: connection_name,
+            credDefId: credDefId,
+            name: name,
+            gender: gender,
+            dob: dob,
+            address: address
+        }
+
         // Make API call to fetch user schema_id
-        // Axios.get('http://localhost:3001/present-proof/send-proposal', {
-        //     params: {
-        //         id: id,
-        //         userPort: userPort,
-        //         connection_name: selectedOption,
-        //         credDefId: listOfUsers[selectedOption].schema_id,
-        //         // name: attName,
-        //         // gender: gender,
-        //         // dob: dob,
-        //         // address: address
-        //     }
-        // }).then(response => {
-        //     setListOfUsers(response.data);
-        //     console.log(listOfUsers);
-        // }).catch(error => {
-        //     console.log(error);
-        // });
+        Axios.post('http://localhost:3001/present-proof/send-proposal',
+            data
+        ).then(response => {
+            // setListOfUsers(response.data);
+            // console.log(listOfUsers);
+        }).catch(error => {
+            console.log(error);
+        });
     };
 
 
@@ -393,7 +405,7 @@ function Holder() {
                                                 >
                                                     {connectionName.map((item, index) => (
                                                         <Dropdown.Item
-                                                            key={index} eventKey={index}
+                                                            key={index} eventKey={item.connection_name}
                                                         >
                                                             {item.connection_name}
                                                         </Dropdown.Item>
@@ -422,8 +434,10 @@ function Holder() {
                                                         let colonIndex = -1;
                                                         let extractedValue = "";
 
+
                                                         for (let i = 0; i < 2; i++) {
                                                             colonIndex = originalString.indexOf(":", colonIndex + 1);
+
                                                             if (colonIndex === -1) {
                                                                 break;
                                                             }
@@ -431,6 +445,7 @@ function Holder() {
 
                                                         if (colonIndex !== -1) {
                                                             extractedValue = originalString.substring(colonIndex + 1).trim();
+                                                            extractedValue = extractedValue
                                                         }
 
                                                         console.log(extractedValue); // Output: " Final Value"
@@ -439,7 +454,7 @@ function Holder() {
 
 
                                                             <Dropdown.Item
-                                                                key={index} eventKey={extractedValue}
+                                                                key={index} eventKey={index}
                                                             >
                                                                 {extractedValue}
                                                             </Dropdown.Item>

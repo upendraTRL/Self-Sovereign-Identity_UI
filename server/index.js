@@ -89,6 +89,7 @@ app.post("/newcard", (req, res) => {
     const schema_id = req.body.schema_id;
     const cred_def_id = req.body.cred_def_id;
     const username = req.body.username;
+    console.log("Valuesss - ", schema_id, cred_def_id);
 
     db.query(
         "UPDATE users SET schema_id = ?, cred_def_id = ? WHERE username = ?",
@@ -421,29 +422,55 @@ app.get("/issue-credential/get-credentials", (req, res) => {
 
 
 app.post("/present-proof/send-proposal", (req, res) => {
-    let port = req.body.userPort
-    let port1 = port + 9000
+    // userPort: req.body.userPort
 
-    let data = {
-        userPort: port1,
-        connection_id: string,
-        cred_def_id: string,
-        name: string,
-        dob: string,
-        gender: string,
-        address: string
-    }
 
-    console.log("Inside issue credential send")
-    axios.post(`http://${process.env.NEST_IP}:${process.env.NEST_PORT}/present-proof/send-proposal`),
-        data
+    const userPort = req.body.userPort
+    const name = req.body.name
+    const dob = req.body.dob
+    const address = req.body.address
+    const gender = req.body.gender
+    const credDefId = req.body.credDefId
+    const connection_name = req.body.connection_name
+    const id = req.body.id
+    console.log("USER PROROT - ", userPort);
 
+    //Fetching conn_id
+    const query = `SELECT connection_id FROM connection WHERE id = ? AND connection_name = ?`;
+
+    db.query(query, [id, connection_name], (err, result) => {
+        if (err) {
+            return res.json(err);
+        }
+
+        // connection_id = result[0].connection_id
+        connection_id = result
+        console.log("Connection ID for  = ", connection_id);
+        // return res.json(result);
+
+        let data = {
+            userPort: userPort,
+            connection_id: connection_id,
+            credDefId: credDefId,
+            name: name,
+            dob: dob,
+            gender: gender,
+            address: address
+        }
+
+        console.log("Inside Present Proof send")
+        axios.post(`http://${process.env.NEST_IP}:${process.env.NEST_PORT}/present-proof/send-proposal`, data)
             .then(response => {
-                console.log(response.data);
+                console.log("Present Proff worked - ", response.data);
             })
             .catch(error => {
                 console.error(error);
             });
+
+    });
+
+
+
 })
 
 
