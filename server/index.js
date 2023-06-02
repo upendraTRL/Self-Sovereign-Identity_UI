@@ -402,6 +402,7 @@ app.get("/issue-credential/get-credentials", (req, res) => {
     const userPort = req.query.userPort
     const username = req.query.username
     console.log("Get Creds API ", userPort);
+    const testSend = "Hello"
 
     // console.log("Inside issue credential send")
     axios.post(`http://${process.env.NEST_IP}:${process.env.NEST_PORT}/issue-credential/get-cred-records`,
@@ -411,7 +412,7 @@ app.get("/issue-credential/get-credentials", (req, res) => {
 
         .then(response => {
             console.log("Get Creds Responsssssssssssss -", (response.data.results));
-            res.send(response.data.results);
+            res.send(response.data.results,);
         })
         .catch(error => {
             console.error(error);
@@ -476,15 +477,17 @@ app.post("/present-proof/send-proposal", (req, res) => {
 
 app.get("/present-proof/records", (req, res) => {
 
-    let port = req.body.userPort
-    let data = port + 9000
+    const userPort = req.query.userPort
 
-    console.log("Inside issue credential send")
-    axios.get(`http://${process.env.NEST_IP}:${process.env.NEST_PORT}/present-proof/records`), {
-        data
-    }
+    console.log("Inside issue credential send", userPort)
+    axios.post(`http://${process.env.NEST_IP}:${process.env.NEST_PORT}/present-proof/records`,
+        {
+            userPort
+        })
+
         .then(response => {
-            console.log(response.data);
+            console.log("Get Verifier Responsssssssssssss -", (response.data.results));
+            res.send(response.data.results);
         })
         .catch(error => {
             console.error(error);

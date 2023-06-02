@@ -113,6 +113,35 @@ function Verifier() {
     };
 
 
+    //Refresh in verifier
+    const sampleUsers = [{ attrs: { name: "", gender: "", dob: "", address: "" }, schema_id: "" }]
+    var [listOfUsers, setListOfUsers] = useState(sampleUsers);
+    const [verified, setVerified] = useState("");
+
+    const handleGetCredentials = () => {
+        let id = parseInt(localStorage.getItem('idVerifier'), 10);
+        const userPort = id + 9000
+        const username = localStorage.getItem('usernameVerifier');
+        console.log("IDDDDDDDDDD - ", userPort);
+
+        // Make API call to fetch user schema_id
+        Axios.get('http://localhost:3001/present-proof/records', {
+            params: {
+                userPort: userPort,
+                username: username
+            }
+        }).then(response => {
+            setListOfUsers(response.data);
+            console.log(response.data);
+            // console.log(response[1].data);
+
+            console.log(listOfUsers);
+        }).catch(error => {
+            console.log(error);
+        });
+    };
+
+
     //Main
     return (
 
@@ -222,97 +251,77 @@ function Verifier() {
                                     <h2>Verifications</h2>
                                 </Col>
                                 <Col>
-                                    <HolderButton value="Refresh" />
+                                    <Button
+                                        style={{ background: "#087494", color: "#FFFFFF", border: "none" }}
+                                        onClick={handleGetCredentials} >
+                                        Refresh
+                                    </Button>
                                 </Col>
                             </Row>
 
                             {/* Verification aadhar */}
                             <Row>
                                 <Row className='rightBlock1'>
-                                    <Row className='title1'>
-                                        <Col>
-                                            <h4>Aadhar</h4>
-                                        </Col>
-                                        <Col>
-                                            <h4 className='verified'>Verified</h4>
-                                        </Col>
 
-                                    </Row>
-                                    <Col>
-                                        <Form>
-                                            <Form.Group className="mb-3" controlId="formBasicEmail">
-                                                <Form.Label className='textColor'>Name: </Form.Label>
-                                                <Form.Control type="text" placeholder="Enter Name" />
-                                            </Form.Group>
+                                    <div className='usersDisplay'>
 
-                                            <Form.Group className="mb-3" controlId="formBasicEmail">
-                                                <Form.Label className='textColor'>Age: </Form.Label>
-                                                <Form.Control type="number" placeholder="Enter Age" />
-                                            </Form.Group>
-                                        </Form>
-                                    </Col>
+                                        {listOfUsers.map((user) => {
 
 
-                                    <Col>
-                                        <Form>
-                                            <Form.Group className="mb-3" controlId="formBasicEmail">
-                                                <Form.Label className='textColor'>Gender: </Form.Label>
-                                                <Form.Control type="text" placeholder="Enter Gender" />
-                                            </Form.Group>
-
-                                            <Form.Group className="mb-3" controlId="formBasicEmail">
-                                                <Form.Label className='textColor'>Address: </Form.Label>
-                                                <Form.Control type="text" placeholder="Enter Address" />
-                                            </Form.Group>
-                                        </Form>
-                                    </Col>
-
-                                </Row>
-                            </Row>
-
-                            {/* Verification pan */}
-                            <Row>
-                                <Row className='rightBlock2'>
-                                    <Row className='title1'>
-
-                                        <Col>
-                                            <h4>Pan</h4>
-                                        </Col>
-                                        <Col>
-                                            <Col>
-                                                <h4 className='verified'>Verified</h4>
-                                            </Col>
-                                        </Col>
-
-                                    </Row>
-                                    <Col>
-                                        <Form>
-                                            <Form.Group className="mb-3" controlId="formBasicEmail">
-                                                <Form.Label className='textColor'>Name: </Form.Label>
-                                                <Form.Control type="text" placeholder="Enter Name" />
-                                            </Form.Group>
-
-                                            <Form.Group className="mb-3" controlId="formBasicEmail">
-                                                <Form.Label className='textColor'>Age: </Form.Label>
-                                                <Form.Control type="number" placeholder="Enter Age" />
-                                            </Form.Group>
-                                        </Form>
-                                    </Col>
+                                            let checkVerified = user.verified
 
 
-                                    <Col>
-                                        <Form>
-                                            <Form.Group className="mb-3" controlId="formBasicEmail">
-                                                <Form.Label className='textColor'>Gender: </Form.Label>
-                                                <Form.Control type="text" placeholder="Enter Gender" />
-                                            </Form.Group>
 
-                                            <Form.Group className="mb-3" controlId="formBasicEmail">
-                                                <Form.Label className='textColor'>Address: </Form.Label>
-                                                <Form.Control type="text" placeholder="Enter Address" />
-                                            </Form.Group>
-                                        </Form>
-                                    </Col>
+                                            return (
+
+                                                // User list
+                                                <Row>
+                                                    <Row className='title1'>
+                                                        <Col>
+                                                            {
+                                                                (checkVerified == 'true') ?
+                                                                    (<h4 className='verified'>Verified</h4>) :
+                                                                    (<h4 className='verified'>Not Verified</h4>)
+                                                            }
+
+                                                        </Col>
+                                                    </Row>
+
+                                                    <Col>
+                                                        <Form>
+                                                            <Form.Group className="mb-3" controlId="formBasicEmail">
+                                                                <Form.Label className='textColor'>Name: </Form.Label>
+                                                                <Form.Control type="text" value={user.connection_id} disabled />
+                                                            </Form.Group>
+
+                                                            {/* <Form.Group className="mb-3" controlId="formBasicEmail">
+                                                                <Form.Label className='textColor'>Date Of Birth: </Form.Label>
+                                                                <Form.Control type="text" value={user.attrs.dob} disabled />
+                                                            </Form.Group> */}
+                                                        </Form>
+                                                    </Col>
+
+
+                                                    {/* <Col>
+
+
+                                                        <Form>
+                                                            <Form.Group className="mb-3" controlId="formBasicEmail">
+                                                                <Form.Label className='textColor'>Gender: </Form.Label>
+                                                                <Form.Control type="text" value={user.attrs.gender} disabled />
+                                                            </Form.Group>
+
+                                                            <Form.Group className="mb-3" controlId="formBasicEmail">
+                                                                <Form.Label className='textColor'>Address: </Form.Label>
+                                                                <Form.Control type="text" value={user.attrs.address} disabled />
+                                                            </Form.Group>
+                                                        </Form>
+                                                    </Col> */}
+                                                    <hr style={{ background: "black", height: "3px" }} />
+                                                </Row>
+                                            );
+                                        })}
+                                    </div>
 
                                 </Row>
                             </Row>
