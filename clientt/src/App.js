@@ -1,95 +1,40 @@
-import React, { useEffect, useState } from "react";
-import Axios from "axios";
-import './App.css';
+import Login from './components/Login';
+import Registration from './components/Registration';
+import Holder from './components/Holder';
+import Verifier from './components/Verifier';
+import Issuer from './components/Issuer';
+import { Routes, Route, Router } from "react-router-dom";
+
+const user_types = {
+  holder: 'holder',
+  verifier: 'verifier',
+  issuer: 'issuer'
+}
+
+const current_user = user_types.verifier;
 
 function App() {
-
-  const [usernameReg, setUsernameReg] = useState("");
-  const [passwordReg, setPasswordReg] = useState("");
-
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-
-  const [loginStatus, setLoginStatus] = useState("");
-
-  Axios.defaults.withCredentials = true;
-
-  const register = () => {
-    Axios.post("http://localhost:3001/register", {
-      username: usernameReg,
-      password: passwordReg,
-    }).then((response) => {
-      console.log(response);
-    });
-  };
-
-  const login = () => {
-    Axios.post("http://localhost:3001/login", {
-      username: username,
-      password: password,
-    }).then((response) => {
-      if (response.data.message) {
-        setLoginStatus(response.data.message);
-      } else {
-        setLoginStatus(response.data[0].username);
-      }
-    });
-  };
-
-  useEffect(() => {
-    Axios.get("http://localhost:3001/login").then((response) => {
-      if (response.data.loggedIn == true) {
-        setLoginStatus(response.data.user[0].username);
-      }
-    });
-  }, []);
-
-
   return (
-    <div className="App">
+    <Routes>
+      <Route path="/" element={<Login />} />
+      <Route path="/registration" element={<Registration />} />
 
-      <div className="registration">
-        <h1>Registration</h1>
-        <label>Username</label>
-        <input
-          type="text"
-          onChange={(e) => {
-            setUsernameReg(e.target.value);
-          }}
-        />
-        <label>Password</label>
-        <input
-          type="text"
-          onChange={(e) => {
-            setPasswordReg(e.target.value);
-          }}
-        />
-        <button onClick={register}> Register </button>
-      </div>
-
-      <div className="login">
-        <h1>Login</h1>
-        <input
-          type="text"
-          placeholder="Username..."
-          onChange={(e) => {
-            setUsername(e.target.value);
-          }}
-        />
-        <input
-          type="password"
-          placeholder="Password..."
-          onChange={(e) => {
-            setPassword(e.target.value);
-          }}
-        />
-        <button onClick={login}> Login </button>
-      </div>
-
-      <h1>{loginStatus}</h1>
-
-    </div>
+      {/* We want to protect these routes */}
+      <Route path="/holder" element={<Holder />} />
+      <Route path="/verifier" element={<Verifier />} />
+      <Route path="/issuer" element={<Issuer />} />
+      {/* <Route path="/holder" element={<HolderElement><Holder /></HolderElement>} /> */}
+    </Routes>
   );
 }
+
+// function HolderElement({ children }) {
+//   if (current_user === user_types.holder) {
+//     return <> {children}</>;
+//   } else {
+//     return <div>Not Authorized</div>;
+//   }
+// }
+
 
 export default App;
